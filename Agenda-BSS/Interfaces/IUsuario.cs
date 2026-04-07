@@ -1,0 +1,16 @@
+﻿using Agenda_Model;
+using Agenda_Model.General;
+using Azure;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Agenda_BSS.Interfaces
+{
+    public interface IUsuario
+    {
+        Task<Result<UsuarioDTO>> GetUser(string email);
+    }
+}

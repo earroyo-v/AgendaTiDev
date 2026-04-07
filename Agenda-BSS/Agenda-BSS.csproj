@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Agenda_BSS</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Agenda-Data\Agenda-Data.csproj" />
+    <ProjectReference Include="..\Agenda-Model\Agenda-Model.csproj" />
+  </ItemGroup>
+
+</Project>
