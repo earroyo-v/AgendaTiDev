@@ -1,10 +1,12 @@
 using System.Diagnostics;
 using Agenda_BSS.Interfaces;
 using Agenda_Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Agenda_Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IUsuario _usuario;
@@ -13,7 +15,7 @@ namespace Agenda_Web.Controllers
         {
             _usuario = usuario;
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var user = await _usuario.GetUser("erick");

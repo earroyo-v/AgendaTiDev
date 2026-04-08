@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.9" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Agenda-Data\Agenda-Data.csproj" />
     <ProjectReference Include="..\Agenda-Model\Agenda-Model.csproj" />
   </ItemGroup>
