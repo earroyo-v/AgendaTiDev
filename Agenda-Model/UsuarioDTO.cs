@@ -11,6 +11,7 @@ namespace Agenda_Model
     public class UsuarioDTO
     {
         public int IdUsuario { get; set; }
+        public string Nombre { get; set; } = null!;
         public string ApellidoPaterno { get; set; } = null!;
         public string? ApellidoMaterno { get; set; }
         public DateOnly FechaNacimiento { get; set; }
@@ -25,6 +26,7 @@ namespace Agenda_Model
             return new UsuarioDTO
             {
                 IdUsuario = usuario.IdUsuario,
+                Nombre = usuario.Nombre,
                 ApellidoPaterno = usuario.ApellidoPaterno,
                 ApellidoMaterno = usuario.ApellidoMaterno,
                 FechaNacimiento = usuario.FechaNacimiento,

@@ -10,6 +10,6 @@ namespace Agenda_Model.General
     {
         public T? Data { get; set; }
         public bool Error { get; set; } = false;
-        public string? Message { get; set; }
+        public string? Message { get; set; } = "Ok";
     }
 }
