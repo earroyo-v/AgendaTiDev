@@ -8,6 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication("AgendaCookie")
+    .AddCookie("AgendaCookie", options =>
+    {
+        options.LoginPath = "/";
+        options.AccessDeniedPath = "/";
+    });
+
 builder.Services.AddScoped<IUsuario, UsuarioService>();
 
 // Add services to the container.
@@ -22,6 +29,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
