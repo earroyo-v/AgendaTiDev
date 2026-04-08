@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAuthentication("AgendaCookie")
     .AddCookie("AgendaCookie", options =>
     {
-        options.LoginPath = "/";
+        options.LoginPath = "/login";
         options.AccessDeniedPath = "/";
     });
 
@@ -30,14 +30,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

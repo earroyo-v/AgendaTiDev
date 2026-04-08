@@ -1,4 +1,5 @@
 ﻿using Agenda_BSS.Interfaces;
+using Agenda_Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,18 +13,23 @@ namespace Agenda_Web.Controllers
         {
             _usuario = usuario;
         }
+        [HttpGet("/login")]
         public IActionResult Index()
         {
             return View();
         }
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(LoginViewModel login)
         {
             try
             {
-                var validation = await _usuario.ValidateUser(email, password);
+                if (!ModelState.IsValid)
+                {
+                    return Redirect("/login");
+                }
+                var validation = await _usuario.ValidateUser(login.email, login.password);
                 if (validation.Error)
                 {
-                    return View(validation);
+                    return Redirect("/login");
                 }
                 var user = validation.Data;
                 var claims = new List<Claim>
@@ -43,7 +49,7 @@ namespace Agenda_Web.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                return Redirect("/login");
             }
         }
     }

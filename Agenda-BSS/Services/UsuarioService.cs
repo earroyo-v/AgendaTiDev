@@ -35,16 +35,24 @@ namespace Agenda_BSS.Services
 
                 var hasher = new PasswordHasher<object>();
 
-                string hash = hasher.HashPassword(null, password);
+                string hash = hasher.HashPassword(null, password); //PBKDF2(password, salt, iteraciones, SHA512)
 
-                //var resultado = hasher.VerifyHashedPassword(null, hash, password);
-
-                var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email && x.Password == hash);
+                //el email tiene que ser unico
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
 
                 if (usuario == null)
                 {
                     response.Error = true;
-                    response.Message = "Email o Password incorrecto";
+                    response.Message = "Email incorrecto";
+                    return response;
+                }
+
+                var resultado = hasher.VerifyHashedPassword(null, hash, usuario.Password);
+
+                if (resultado != PasswordVerificationResult.Success)
+                {
+                    response.Error = true;
+                    response.Message = "Password incorrecto";
                     return response;
                 }
 
