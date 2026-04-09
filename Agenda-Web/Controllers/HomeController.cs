@@ -15,7 +15,7 @@ namespace Agenda_Web.Controllers
         {
             _usuario = usuario;
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var user = await _usuario.GetUser("erick");
