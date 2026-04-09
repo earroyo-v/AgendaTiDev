@@ -40,7 +40,8 @@ namespace Agenda_Web.Controllers
                 {
                     new Claim(ClaimTypes.Name,user.Nombre),
                     new Claim(ClaimTypes.Email,user.Email),
-                    new Claim(ClaimTypes.Role,"Admin")
+                    new Claim(ClaimTypes.NameIdentifier,user.NickName),
+                    new Claim(ClaimTypes.Role,user.Rol)
                 };
 
                 var identity = new ClaimsIdentity(claims, "AgendaCookie");

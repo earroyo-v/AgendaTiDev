@@ -20,6 +20,8 @@ namespace Agenda_Model
         public string Password { get; set; } = null!;
         public string? Foto { get; set; }
         public string? UrlPerfil { get; set; }
+        public int? IdRol { get; set; }
+        public string? Rol { get; set; }
 
         public static implicit operator UsuarioDTO(Usuario usuario)
         {
@@ -34,7 +36,9 @@ namespace Agenda_Model
                 NickName = usuario.NickName,
                 Password = usuario.Password,
                 Foto = usuario.Foto,
-                UrlPerfil = usuario.UrlPerfil
+                UrlPerfil = usuario.UrlPerfil,
+                IdRol = usuario.IdRol,
+                Rol = usuario.IdRolNavigation?.Nombre
             };
         }
     }
