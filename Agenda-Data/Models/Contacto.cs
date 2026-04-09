@@ -27,7 +27,7 @@ public partial class Contacto
     public DateOnly FechaNacimiento { get; set; }
 
     [Unicode(false)]
-    public string? Foto { get; set; }
+    public string Foto { get; set; } = null!;
 
     [StringLength(50)]
     [Unicode(false)]
@@ -35,7 +35,7 @@ public partial class Contacto
 
     [StringLength(50)]
     [Unicode(false)]
-    public string Email { get; set; } = null!;
+    public string? Email { get; set; }
 
     public int IdUsuario { get; set; }
 

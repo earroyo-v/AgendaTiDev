@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Agenda_Data.Models;
 
 [Table("Usuario")]
+[Index("Email", Name = "IX_Users_Email", IsUnique = true)]
 public partial class Usuario
 {
     [Key]
@@ -34,17 +35,23 @@ public partial class Usuario
     [Unicode(false)]
     public string NickName { get; set; } = null!;
 
-    [StringLength(50)]
+    [StringLength(255)]
     [Unicode(false)]
     public string Password { get; set; } = null!;
 
     [Unicode(false)]
-    public string? Foto { get; set; }
+    public string Foto { get; set; } = null!;
 
     [StringLength(100)]
     [Unicode(false)]
-    public string? UrlPerfil { get; set; }
+    public string UrlPerfil { get; set; } = null!;
+
+    public int? IdRol { get; set; }
 
     [InverseProperty("IdUsuarioNavigation")]
     public virtual ICollection<Contacto> Contactos { get; set; } = new List<Contacto>();
+
+    [ForeignKey("IdRol")]
+    [InverseProperty("Usuarios")]
+    public virtual Role? IdRolNavigation { get; set; }
 }
