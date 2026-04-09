@@ -16,6 +16,10 @@ namespace Agenda_Web.Controllers
         [HttpGet("/login")]
         public IActionResult Index()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
         public async Task<IActionResult> Login(LoginViewModel login)
