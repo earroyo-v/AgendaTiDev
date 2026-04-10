@@ -53,7 +53,13 @@ namespace Agenda_Web.Controllers
 
                 var principal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                double expireTime = 3;
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddHours(expireTime)
+                });
 
                 return RedirectToAction("Index", "Home");
             }
