@@ -1,6 +1,7 @@
 ﻿using Agenda_BSS.Interfaces;
 using Agenda_Web.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -13,6 +14,7 @@ namespace Agenda_Web.Controllers
         {
             _usuario = usuario;
         }
+        [HttpGet("/")]
         [HttpGet("/login")]
         public IActionResult Index()
         {
@@ -22,40 +24,48 @@ namespace Agenda_Web.Controllers
             }
             return View();
         }
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
+                    ViewData["error"] = "Información Invalida";
                     return Redirect("/login");
                 }
                 var validation = await _usuario.ValidateUser(login.email, login.password);
                 if (validation.Error)
                 {
+                    ViewData["error"] = validation.Message;
                     return Redirect("/login");
                 }
                 var user = validation.Data;
                 var claims = new List<Claim>
                 {
+                    new Claim("IdUsuario",user.IdUsuario.ToString()),
                     new Claim(ClaimTypes.Name,user.Nombre),
                     new Claim(ClaimTypes.Email,user.Email),
-                    new Claim(ClaimTypes.NameIdentifier,user.NickName),
                     new Claim(ClaimTypes.Role,user.Rol)
                 };
 
-                var identity = new ClaimsIdentity(claims, "AgendaCookie");
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var principal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync("AgendaCookie", principal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
+                ViewData["error"] = "Error inesperado";
                 return Redirect("/login");
             }
         }
+        /*partial async Task<IActionResult> LogOut()
+        {
+            return "";
+        }*/
     }
 }
