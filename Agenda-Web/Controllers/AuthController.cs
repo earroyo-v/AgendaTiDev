@@ -31,13 +31,13 @@ namespace Agenda_Web.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    ViewData["error"] = "Información Invalida";
+                    TempData["error"] = "Información Invalida";
                     return Redirect("/login");
                 }
                 var validation = await _usuario.ValidateUser(login.email, login.password);
                 if (validation.Error)
                 {
-                    ViewData["error"] = validation.Message;
+                    TempData["error"] = validation.Message;
                     return Redirect("/login");
                 }
                 var user = validation.Data;
@@ -65,7 +65,7 @@ namespace Agenda_Web.Controllers
             }
             catch (Exception ex)
             {
-                ViewData["error"] = "Error inesperado";
+                TempData["error"] = "Error inesperado";
                 return Redirect("/login");
             }
         }
