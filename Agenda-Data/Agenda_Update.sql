@@ -1,3 +1,5 @@
+USE GENERACION33
+
 IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_Users_Email')
 BEGIN
 	CREATE UNIQUE NONCLUSTERED INDEX
@@ -10,19 +12,22 @@ CREATE TABLE Roles (
 	Nombre NVARCHAR(50) NOT NULL,
 	Descripcion NVARCHAR(50)
 	)
+	
+INSERT INTO Roles Values
+('Admin','Administradores'),
+('User','Usuario')
 
 ALTER TABLE Usuario
-ADD IdRol INT
+ADD IdRol INT NOT NULL DEFAULT 2;
 
 ALTER TABLE Usuario 
 ADD CONSTRAINT Fk_Usuario_Roles
 FOREIGN KEY (IdRol) REFERENCES Roles(Id)
 
-INSERT INTO Roles Values
-('Admin','Administradores'),
-('User','Usuario')
+ALTER TABLE Usuario
+ALTER COLUMN Email VARCHAR(50) NOT NULL;
 
---SELECT*FROM Usuario U
---INNER JOIN Roles R ON U.IdUsuario = R.Id
+SELECT*FROM Usuario U
+INNER JOIN Roles R ON U.IdRol = R.Id
 
---UPDATE Usuario SET IDROL = 2 WHERE IdUsuario = 2
+--UPDATE Usuario SET IDROL = 1 WHERE IdUsuario = 1
