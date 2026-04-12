@@ -40,18 +40,18 @@ public partial class Usuario
     public string Password { get; set; } = null!;
 
     [Unicode(false)]
-    public string Foto { get; set; } = null!;
+    public string? Foto { get; set; }
 
     [StringLength(100)]
     [Unicode(false)]
-    public string UrlPerfil { get; set; } = null!;
+    public string? UrlPerfil { get; set; }
 
-    public int? IdRol { get; set; }
+    public int IdRol { get; set; }
 
     [InverseProperty("IdUsuarioNavigation")]
     public virtual ICollection<Contacto> Contactos { get; set; } = new List<Contacto>();
 
     [ForeignKey("IdRol")]
     [InverseProperty("Usuarios")]
-    public virtual Role? IdRolNavigation { get; set; }
+    public virtual Role IdRolNavigation { get; set; } = null!;
 }
