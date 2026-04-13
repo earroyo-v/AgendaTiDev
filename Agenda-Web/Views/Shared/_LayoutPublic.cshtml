@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Agenda_Web.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
+@* <body style="background: linear-gradient(to right, #0062E6, #33AEFF);"> *@
+<body style="background: linear-gradient(to right, #8e2de2, #ff6a88);">
+@* <body style="background: linear-gradient(to right, #11998e, #38ef7d);"> *@
+    @* <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Agenda_Web</a>
@@ -28,8 +30,8 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
+        </nav> 
+    </header>*@
     <div class="container">
         <main role="main" class="pb-3">
             @if (TempData["success"] != null)
@@ -46,11 +48,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @* <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - Agenda_Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
