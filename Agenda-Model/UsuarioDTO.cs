@@ -1,4 +1,4 @@
-﻿using Agenda_Data.Models;
+﻿//using Agenda_Data.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +23,7 @@ namespace Agenda_Model
         public int? IdRol { get; set; }
         public string? Rol { get; set; }
 
-        public static implicit operator UsuarioDTO(Usuario usuario)
+        /*public static implicit operator UsuarioDTO(Usuario usuario)
         {
             return new UsuarioDTO
             {
@@ -40,6 +40,6 @@ namespace Agenda_Model
                 IdRol = usuario.IdRol,
                 Rol = usuario.IdRolNavigation?.Nombre
             };
-        }
+        }*/
     }
 }

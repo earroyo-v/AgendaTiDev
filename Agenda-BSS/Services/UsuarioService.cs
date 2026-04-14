@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Agenda_BSS.Mappings;
 
 namespace Agenda_BSS.Services
 {
@@ -56,7 +57,7 @@ namespace Agenda_BSS.Services
                     return response;
                 }
 
-                response.Data = usuario;
+                response.Data = usuario.ToDTO();
             }
             catch (Exception ex)
             {
@@ -70,7 +71,8 @@ namespace Agenda_BSS.Services
             Result<UsuarioDTO> response = new();
             try
             {
-                response.Data = await _context.Usuarios.AsNoTracking().Where(x => x.Nombre.Contains(email)).FirstOrDefaultAsync() ?? new UsuarioDTO();
+                var usuario = await _context.Usuarios.AsNoTracking().Where(x => x.Nombre.Contains(email)).FirstOrDefaultAsync();
+                response.Data = usuario?.ToDTO();
             }
             catch (Exception ex)
             {
