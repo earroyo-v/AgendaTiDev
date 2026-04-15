@@ -68,5 +68,11 @@ namespace Agenda_Web.Controllers
         {
             return View();
         }
+        public async Task<JsonResult> EmailUnico(string email)
+        {
+            bool emailUnique = await _usuario.ValidateEmail(email);
+
+            return Json(!emailUnique);
+        }
     }
 }

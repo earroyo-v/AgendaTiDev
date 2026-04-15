@@ -26,7 +26,7 @@ namespace Agenda_Web.Models
         public DateOnly FechaNacimiento { get; set; }
         [Required]
         [EmailAddress]
-        //[Remote()]
+        [Remote("EmailUnico","User", ErrorMessage = "Este correo ya esta en uso")]
         public string Email { get; set; } = null!;
         [Required]
         [MinLength(3)]

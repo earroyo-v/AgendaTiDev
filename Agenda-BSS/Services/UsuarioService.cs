@@ -107,12 +107,12 @@ namespace Agenda_BSS.Services
             }
             return response;
         }
-        public async Task<Result<UsuarioDTO>> GetUser(string email)
+        public async Task<Result<UsuarioDTO>> GetUser(int id)
         {
             Result<UsuarioDTO> response = new();
             try
             {
-                var usuario = await _context.Usuarios.AsNoTracking().Where(x => x.Nombre.Contains(email)).FirstOrDefaultAsync();
+                var usuario = await _context.Usuarios.AsNoTracking().Where(x => x.IdUsuario == id).FirstOrDefaultAsync();
                 response.Data = usuario?.ToDTO();
             }
             catch (Exception ex)
@@ -121,6 +121,10 @@ namespace Agenda_BSS.Services
                 response.Message = ex.Message;
             }
             return response;
+        }
+        public async Task<bool> ValidateEmail(string email)
+        {
+            return await _context.Usuarios.AsNoTracking().AnyAsync(x => x.Email == email);
         }
     }
 }

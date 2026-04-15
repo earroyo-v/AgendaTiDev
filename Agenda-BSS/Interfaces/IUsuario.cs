@@ -13,6 +13,7 @@ namespace Agenda_BSS.Interfaces
     {
         Task<Result<UsuarioDTO>> ValidateUser(string email, string password);
         Task<Result<bool>> CreateUser(UsuarioDTO user);   
-        Task<Result<UsuarioDTO>> GetUser(string email);
+        Task<Result<UsuarioDTO>> GetUser(int id);
+        Task<bool> ValidateEmail(string email);
     }
 }
