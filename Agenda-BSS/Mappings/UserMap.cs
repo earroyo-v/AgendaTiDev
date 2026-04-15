@@ -28,5 +28,22 @@ namespace Agenda_BSS.Mappings
                 Rol = usuario.IdRolNavigation?.Nombre
             };
         }
+
+        public static Usuario ToDTO(this UsuarioDTO user)
+        {
+            return new Usuario
+            {
+                Nombre = user.Nombre,
+                ApellidoPaterno = user.ApellidoPaterno,
+                ApellidoMaterno = user.ApellidoMaterno,
+                FechaNacimiento = user.FechaNacimiento,
+                Email = user.Email,
+                NickName = user.NickName,
+                Password = user.Password,
+                Foto = user.Foto,
+                UrlPerfil = user.UrlPerfil,
+                IdRol = user.IdRol
+            };
+        }
     }
 }

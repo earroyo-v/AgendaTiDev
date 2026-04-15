@@ -20,8 +20,8 @@ namespace Agenda_Model
         public string Password { get; set; } = null!;
         public string? Foto { get; set; }
         public string? UrlPerfil { get; set; }
-        public int? IdRol { get; set; }
-        public string? Rol { get; set; }
+        public int IdRol { get; set; }
+        public string Rol { get; set; }
 
         /*public static implicit operator UsuarioDTO(Usuario usuario)
         {

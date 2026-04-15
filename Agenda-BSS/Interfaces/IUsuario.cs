@@ -12,6 +12,7 @@ namespace Agenda_BSS.Interfaces
     public interface IUsuario
     {
         Task<Result<UsuarioDTO>> ValidateUser(string email, string password);
+        Task<Result<bool>> CreateUser(UsuarioDTO user);   
         Task<Result<UsuarioDTO>> GetUser(string email);
     }
 }
