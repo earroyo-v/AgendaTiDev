@@ -36,7 +36,7 @@ namespace Agenda_BSS.Services
 
                 var hasher = new PasswordHasher<object>();
 
-                string hash = hasher.HashPassword(null, password); //PBKDF2(password, salt, iteraciones, SHA512)
+                //string hash = hasher.HashPassword(null, password); //PBKDF2(password, salt, iteraciones, SHA512)
 
                 //el email tiene que ser unico
                 var usuario = await _context.Usuarios.Include(x => x.IdRolNavigation).FirstOrDefaultAsync(x => x.Email == email);
@@ -48,7 +48,8 @@ namespace Agenda_BSS.Services
                     return response;
                 }
 
-                var resultado = hasher.VerifyHashedPassword(null, hash, usuario.Password);
+                //var resultado = hasher.VerifyHashedPassword(null, hash, usuario.Password);
+                var resultado = hasher.VerifyHashedPassword(null, usuario.Password, password);
 
                 if (resultado != PasswordVerificationResult.Success)
                 {
