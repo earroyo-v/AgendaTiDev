@@ -35,12 +35,15 @@ namespace Agenda_Web.Models
         [Required]
         [MinLength(8)]
         [MaxLength(20)]
+        [DataType(DataType.Password)]
         [RegularExpression(@"^(?=\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número, un carácter especial y no contener espacios")]
         [Display(Name = "Contraseña")]
         public string Password { get; set; } = null!;
         [Required]
         [MinLength(8)]
         [MaxLength(20)]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         [RegularExpression(@"^(?=\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número, un carácter especial y no contener espacios")]
         [Display(Name = "Confirma tu Contraseña")]
         public string PasswordCheck { get; set; } = null!;
