@@ -1,5 +1,6 @@
 ﻿using Agenda_BSS.Interfaces;
 using Agenda_Web.Models;
+using Agenda_Web.Models.Mappings;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -13,9 +14,11 @@ namespace Agenda_Web.Controllers
     public class UserController : Controller
     {
         private readonly IUsuario _usuario;
-        public UserController(IUsuario usuario)
+        private readonly IWebHostEnvironment _env;
+        public UserController(IUsuario usuario, IWebHostEnvironment env)
         {
             _usuario = usuario;
+            _env = env;
         }
         [HttpGet("/register")]
         public IActionResult Register()
@@ -34,7 +37,30 @@ namespace Agenda_Web.Controllers
                     TempData["error"] = "Información Invalida";
                     return Redirect("/login");
                 }
-                var validation = await _usuario.CreateUser(new Agenda_Model.UsuarioDTO
+                if (user.ArchivoImagen != null && user.ArchivoImagen.Length > 0)
+                {
+                    var tiposPermitidos = new[] { "image/png", "image/jpeg" };
+
+                    if (!tiposPermitidos.Contains(user.ArchivoImagen.ContentType))
+                    {
+                        TempData["error"] = "Solo se permiten imágenes PNG o JPG";
+                        return Redirect("/login");
+                    }
+                    var uploadsFolder = Path.Combine(_env.WebRootPath, "img");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    user.Foto = Guid.NewGuid().ToString() + Path.GetExtension(user.ArchivoImagen.FileName);
+                    var path = Path.Combine(uploadsFolder, user.Foto);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await user.ArchivoImagen.CopyToAsync(stream);
+                    }
+                }
+
+                /*var validation = await _usuario.CreateUser(new Agenda_Model.UsuarioDTO
                 {
                     Nombre = user.Nombre,
                     ApellidoPaterno = user.ApellidoPaterno,
@@ -44,9 +70,11 @@ namespace Agenda_Web.Controllers
                     NickName = user.NickName,
                     Password = user.Password,
                     IdRol = 2,
-                    //Foto = "default.jpg",
-                    //UrlPerfil = "/images/default.jpg"
-                });
+                    Foto = user.Foto,
+                    UrlPerfil = user.UrlPerfil
+                });*/
+                var validation = await _usuario.CreateUser(user.ToDTO());
+
                 if (validation.Error)
                 {
                     TempData["error"] = validation.Message;

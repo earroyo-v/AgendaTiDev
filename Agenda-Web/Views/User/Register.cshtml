@@ -17,7 +17,7 @@
                             <h2 class="fw-bold mb-2 text-uppercase">Register User</h2>
                             <p class="text-white-50 mb-5">Please enter your information!</p>
 
-                            <form asp-action="Register" asp-controller="User" method="post">
+                            <form asp-action="Register" asp-controller="User" method="post" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div data-mdb-input-init class="form-outline form-white mb-4">
                                     <label asp-for="Nombre" class="form-label"></label>
@@ -46,12 +46,12 @@
                                 </div>
                                 <div data-mdb-input-init class="form-outline form-white mb-4">
                                     <label asp-for="Password" class="form-label"></label>
-                                    <input asp-for="Password" class="form-control form-control-lg" type="password"/>
+                                    <input asp-for="Password" class="form-control form-control-lg" type="password" />
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div data-mdb-input-init class="form-outline form-white mb-4">
                                     <label asp-for="PasswordCheck" class="form-label"></label>
-                                    <input asp-for="PasswordCheck" class="form-control form-control-lg" type="password"/>
+                                    <input asp-for="PasswordCheck" class="form-control form-control-lg" type="password" />
                                     <span asp-validation-for="PasswordCheck" class="text-danger"></span>
                                 </div>
                                 <div data-mdb-input-init class="form-outline form-white mb-4">
@@ -59,16 +59,16 @@
                                     <input asp-for="FechaNacimiento" type="date" class="form-control form-control-lg" />
                                     <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                                 </div>
-                                @* <div data-mdb-input-init class="form-outline form-white mb-4">
-                                    <label asp-for="password" class="form-label"></label>
-                                    <input asp-for="Foto" class="form-control form-control-lg" type="password" placeholder="Contrasñea" />
-                                    <span asp-validation-for="Foto" class="text-danger"></span>
+                                <div data-mdb-input-init class="form-outline form-white mb-4">
+                                    <label asp-for="ArchivoImagen" class="form-label"></label>
+                                    <input asp-for="ArchivoImagen" class="form-control form-control-lg" type="file" />
+                                    <span asp-validation-for="ArchivoImagen" class="text-danger"></span>
                                 </div>
                                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                                    <label asp-for="password" class="form-label"></label>
-                                    <input asp-for="UrlPerfil" class="form-control form-control-lg" type="password" placeholder="Contrasñea" />
+                                    <label asp-for="UrlPerfil" class="form-label"></label>
+                                    <input asp-for="UrlPerfil" class="form-control form-control-lg" type="text" />
                                     <span asp-validation-for="UrlPerfil" class="text-danger"></span>
-                                </div> *@
+                                </div>
                                 <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
                             </form>
                         </div>

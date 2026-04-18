@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Configuration;
 
 namespace Agenda_Web.Models
@@ -26,7 +27,7 @@ namespace Agenda_Web.Models
         public DateOnly FechaNacimiento { get; set; }
         [Required]
         [EmailAddress]
-        [Remote("EmailUnico","User", ErrorMessage = "Este correo ya esta en uso")]
+        [Remote("EmailUnico", "User", ErrorMessage = "Este correo ya esta en uso")]
         public string Email { get; set; } = null!;
         [Required]
         [MinLength(3)]
@@ -47,7 +48,10 @@ namespace Agenda_Web.Models
         [RegularExpression(@"^(?=\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número, un carácter especial y no contener espacios")]
         [Display(Name = "Confirma tu Contraseña")]
         public string PasswordCheck { get; set; } = null!;
+        [NotMapped]
+        public IFormFile? ArchivoImagen { get; set; }
         public string? Foto { get; set; }
+        [Url(ErrorMessage = "Ingresa una URL válida")]
         public string? UrlPerfil { get; set; }
     }
 }
