@@ -10,7 +10,7 @@
 </head>
 @* <body style="background: linear-gradient(to right, #0062E6, #33AEFF);"> *@
 <body style="background: linear-gradient(to right, #8e2de2, #ff6a88);">
-@* <body style="background: linear-gradient(to right, #11998e, #38ef7d);"> *@
+    @* <body style="background: linear-gradient(to right, #11998e, #38ef7d);"> *@
     @* <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -36,15 +36,33 @@
         <main role="main" class="pb-3">
             @if (TempData["success"] != null)
             {
-                <br />
-                <div class="alert alert-success small">@TempData["success"]</div>
+                @* <br />
+                <div class="alert alert-success small">@TempData["success"]</div> *@
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var modalElement = document.getElementById('successModal');
+                        var modal = new bootstrap.Modal(modalElement);
+                        document.getElementById("modalMessage").textContent = "@TempData["success"]";
+                        modal.show();
+                    });
+                </script>
             }
             @if (TempData["error"] != null)
             {
-                <br />
-                <div class="alert alert-danger small">@TempData["error"]</div>
+                @* <br />
+                <div class="alert alert-danger small">@TempData["error"]</div> *@
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var modalElement = document.getElementById('errorModal');
+                        var modal = new bootstrap.Modal(modalElement);
+                        document.getElementById("modalMessage").textContent = "@TempData["error"]";
+                        modal.show();
+                    });
+                </script>
             }
             @RenderBody()
+            @await Html.PartialAsync("_ModalSuccess")
+            @await Html.PartialAsync("_ModalError")
         </main>
     </div>
 
