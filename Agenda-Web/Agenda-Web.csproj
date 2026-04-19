@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.3.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.25">
       <PrivateAssets>all</PrivateAssets>

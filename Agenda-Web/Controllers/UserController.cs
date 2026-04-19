@@ -60,19 +60,6 @@ namespace Agenda_Web.Controllers
                     }
                 }
 
-                /*var validation = await _usuario.CreateUser(new Agenda_Model.UsuarioDTO
-                {
-                    Nombre = user.Nombre,
-                    ApellidoPaterno = user.ApellidoPaterno,
-                    ApellidoMaterno = user.ApellidoMaterno,
-                    FechaNacimiento = user.FechaNacimiento,
-                    Email = user.Email,
-                    NickName = user.NickName,
-                    Password = user.Password,
-                    IdRol = 2,
-                    Foto = user.Foto,
-                    UrlPerfil = user.UrlPerfil
-                });*/
                 var validation = await _usuario.CreateUser(user.ToDTO());
 
                 if (validation.Error)
