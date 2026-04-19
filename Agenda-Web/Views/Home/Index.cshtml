@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +6,211 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+ *@
+
+@* @model IEnumerable<WebAgenda.Models.ContactoViewModel> *@
+
+@* @{
+    Layout = "~/Views/Shared/_LayoutAgenda.cshtml";
+    ViewBag.Title = "AgendaView";
+    var user = (WebAgenda.Models.UsuarioSessionViewModel)Session["Usuario"];
+} *@
+<div class="d-flex justify-content-between">
+    <h2>Mi Agenda</h2>
+    <div>
+        @* @if (user.BirthDay != 0)
+        {
+            <b class="btn me-2" style="color:darkblue"><strong>Feliz Cumpleaños @user.Nombre</strong></b>
+        } *@
+    </div>
+    <div>
+        <form class="search-bar position-relative mx-auto" style="max-width: 400px;" method="post" action="/Agenda/Buscar">
+            <input class="form-control ps-5 rounded-pill border-0 shadow-sm"
+                   type="search"
+                   placeholder="Buscar..."
+                   aria-label="Buscar"
+                   name="data"
+                   @*style="border: 2px solid #ff69b4; background-color: #fff0f5;">
+                   style="border: 2px solid #ff69b4; background-color: #FFFDB9;">*@
+                   style="border: 2px solid #ff69b4; background-color: #D4D4D4; ">
+            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                <i class="bi bi-search"></i>
+            </span>
+        </form>
+    </div>
+</div>
+
+
+<p>
+    <div class="d-flex justify-items-center">
+        @if (TempData["t"] != null)
+        {
+            <p>Tienes <strong>@TempData["t"]</strong> contacto(s) almacenado(s)</p>
+        }
+        @if (TempData["te"] != null)
+        {
+            <p><strong>@TempData["te"]</strong> contacto(s) relacionado(s)</p>
+        }
+        <div class="ms-auto d-flex">
+            <a href="/Agenda/AgregarView" class="btn btn-warning btn-sm">Nuevo Contacto</a>
+        </div>
+    </div>
+</p>
+@*@if (Model.Any()) //Any() es un metodo de LINQ devulve true si existe informacion
+{
+    @*<table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApellidoPaterno)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApellidoMaterno)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaNacimiento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Edad)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Foto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Telefono)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdUsuario)
+                </th>
+                @foreach (var RedSocial in Model.First().RedSocial)
+                {
+                    <th>
+                        @RedSocial
+                    </th>
+                }
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApellidoPaterno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApellidoMaterno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Edad)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Foto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefono)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdUsuario)
+                    </td>
+                    @foreach (var perfil in item.Perfil)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => perfil)
+                        </td>
+                    }
+                    <td>
+                        @Html.ActionLink("Edit", "EditarView", new { id = item.IdContacto }) |
+                        @Html.ActionLink("Delete", "EliminarView", new { id = item.IdContacto })
+                    </td>
+                </tr>
+            }
+
+        </table>*@
+@*foreach (var contacto in Model)
+    {
+        var accordionId = "accordion" + contacto.IdContacto;
+
+        <div class="card mb-2 bg-white p-3">
+            <div class="row g-0">
+                <!-- Foto del contacto -->
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    @*<img src="~/Imagenes/@contacto.Foto" class="img-fluid rounded-start" alt="Foto de @contacto.Nombre" style="max-height: 150px;" />
+
+                    @if (contacto.Foto?.Any() == true)
+                    {
+                        <img src="~/Imagenes/@contacto.Foto" class="rounded-circle" width="145" height="145" />
+                    }
+                    else
+                    {
+                        <img src="~/Imagenes/wertyujkedfmncvhgchdjskasdmvnhcjdsmnfhjdks,dmsfjrsjenmlas.jpg" class="rounded-circle" width="145" height="145" />
+                    }
+                </div>
+
+                <!-- Acordeón con detalles -->
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="d-flex justify-items-center">
+                            @if (contacto.BirthDay != 0)
+                            {
+                                <b class="btn me-2" style="color:darkblue"><strong>Feliz Cumpleaños @contacto.Nombre</strong></b>
+                            }
+                            <div class="ms-auto d-flex">
+                                <a href="/Agenda/EditarView/@contacto.IdContacto" class="btn" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="/Agenda/EliminarView/@contacto.IdContacto" class="btn" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="accordion" id="@accordionId">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-@contacto.IdContacto">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@contacto.IdContacto" aria-expanded="false" aria-controls="collapse-@contacto.IdContacto">
+                                        <h5 class="card-title mb-0">@contacto.Nombre @contacto.ApellidoPaterno @contacto.ApellidoMaterno</h5>
+                                    </button>
+                                </h2>
+                                <div id="collapse-@contacto.IdContacto" class="accordion-collapse collapse" aria-labelledby="heading-@contacto.IdContacto" data-bs-parent="#@accordionId">
+                                    <div class="accordion-body">
+                                        <p><strong>Edad:</strong> @contacto.Edad</p>
+                                        <p><strong>Teléfono:</strong> @contacto.Telefono</p>
+                                        <p><strong>Email:</strong> @contacto.Email</p>
+                                        @for (int i = 0; i < contacto.Perfil.Count; i++)
+                                        {
+                                            if (contacto.Perfil[i] != null)
+                                            {
+                                                <p><strong>@contacto.RedSocial[i]:</strong> @contacto.Perfil[i]</p>
+                                            }
+                                        }
+                                        <!-- Agrega más campos si necesitas -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}*@
+@section Scripts {
+    <script>
+        // Aquí puedes agregar cualquier JavaScript adicional si es necesario
+    </script>
+}
