@@ -69,9 +69,19 @@ namespace Agenda_Web.Controllers
                 return Redirect("/login");
             }
         }
-        /*partial async Task<IActionResult> LogOut()
+        [HttpGet("/logout")]
+        public async Task<IActionResult> LogOut()
         {
-            return "";
-        }*/
+            try
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Redirect("/login");
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = "Error inesperado";
+                return Redirect("/login");
+            }
+        }
     }
 }
