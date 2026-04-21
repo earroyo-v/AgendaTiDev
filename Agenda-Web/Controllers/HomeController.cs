@@ -10,15 +10,18 @@ namespace Agenda_Web.Controllers
     public class HomeController : Controller
     {
         private readonly IUsuario _usuario;
+        private readonly IContacto _contacto;
 
-        public HomeController(IUsuario usuario)
+        public HomeController(IUsuario usuario, IContacto contacto)
         {
             _usuario = usuario;
+            _contacto = contacto;
         }
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             //var user = await _usuario.GetUser(1);
+            var user = await _contacto.GetContactos(1);
             return View();
         }
 

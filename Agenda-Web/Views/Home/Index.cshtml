@@ -1,14 +1,4 @@
-﻿@* @{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
- *@
-
-@* @model IEnumerable<WebAgenda.Models.ContactoViewModel> *@
+﻿@* @model IEnumerable<WebAgenda.Models.ContactoViewModel> *@
 
 @* @{
     Layout = "~/Views/Shared/_LayoutAgenda.cshtml";
@@ -56,90 +46,8 @@
         </div>
     </div>
 </p>
-@*@if (Model.Any()) //Any() es un metodo de LINQ devulve true si existe informacion
-{
-    @*<table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nombre)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ApellidoPaterno)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ApellidoMaterno)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FechaNacimiento)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Edad)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Foto)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Telefono)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IdUsuario)
-                </th>
-                @foreach (var RedSocial in Model.First().RedSocial)
-                {
-                    <th>
-                        @RedSocial
-                    </th>
-                }
-                <th></th>
-            </tr>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApellidoPaterno)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApellidoMaterno)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FechaNacimiento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Edad)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Foto)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Telefono)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdUsuario)
-                    </td>
-                    @foreach (var perfil in item.Perfil)
-                    {
-                        <td>
-                            @Html.DisplayFor(modelItem => perfil)
-                        </td>
-                    }
-                    <td>
-                        @Html.ActionLink("Edit", "EditarView", new { id = item.IdContacto }) |
-                        @Html.ActionLink("Delete", "EliminarView", new { id = item.IdContacto })
-                    </td>
-                </tr>
-            }
-
-        </table>*@
+<div id="container"></div>
 @*foreach (var contacto in Model)
     {
         var accordionId = "accordion" + contacto.IdContacto;

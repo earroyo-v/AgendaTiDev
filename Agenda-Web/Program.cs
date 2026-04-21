@@ -29,6 +29,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddScoped<IUsuario, UsuarioService>();
+builder.Services.AddScoped<IContacto, ContactoService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
