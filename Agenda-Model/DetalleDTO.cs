@@ -15,6 +15,6 @@ namespace Agenda_Model
         public int IdRedSocial { get; set; }
         public string UrlPerfil { get; set; } = null!;
         public string NombreRedSocial { get; set; } = null!;
-        public List<RedSocialDTO> RedSocials { get; set; } = new List<RedSocialDTO>();
+        //public RedSocialDTO RedSocials { get; set; } = new();
     }
 }
