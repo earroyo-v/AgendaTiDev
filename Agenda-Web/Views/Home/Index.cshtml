@@ -152,7 +152,9 @@
             }
 
             CreateTable(data){
-                console.log(data);
+                data.data.forEach(item => {
+                    console.log(item.nombre);
+                });
             }
         }
 
