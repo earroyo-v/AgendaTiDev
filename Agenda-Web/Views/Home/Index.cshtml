@@ -120,5 +120,45 @@
 @section Scripts {
     <script>
         // Aquí puedes agregar cualquier JavaScript adicional si es necesario
+        class Contacto {
+            constructor() {
+                this.init();
+            }
+
+            init(){
+                // let contenedor = document.getElementById("container")
+                this.GetContactos();
+            }
+
+            async GetContactos() {
+                try{
+                    const response = await fetch("/Home/GetContactos/");
+
+                    if (!response.ok) {
+                        throw new Error("Error en la respuesta del servidor");
+                    }
+
+                    const data = await response.json();
+
+                    if (!data.error) {
+                        this.CreateTable(data);
+                    } else {
+                        console.error("Error del backend:", data.mensaje);
+                    }
+                }
+                catch (error) {
+                    console.error("Error general:", error);
+                }
+            }
+
+            CreateTable(data){
+                console.log(data);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded",() => {
+            new Contacto();
+        });
+
     </script>
 }

@@ -21,8 +21,14 @@ namespace Agenda_Web.Controllers
         public async Task<IActionResult> Index()
         {
             //var user = await _usuario.GetUser(1);
-            var user = await _contacto.GetContactos(1);
+            //var user = await _contacto.GetContactos(1);
             return View();
+        }
+
+        public async Task<IActionResult> GetContactos()
+        {
+            var user = await _contacto.GetContactos(1);
+            return Json(user);
         }
 
         public IActionResult Privacy()
