@@ -15,11 +15,11 @@
     </div>
     <div>
         <form class="search-bar position-relative mx-auto" style="max-width: 400px;" method="post"
-            action="/Agenda/Buscar">
+              action="/Agenda/Buscar">
             <input class="form-control ps-5 rounded-pill border-0 shadow-sm" type="search" placeholder="Buscar..."
-                aria-label="Buscar" name="data" @*style="border: 2px solid #ff69b4; background-color: #fff0f5;">
+                   aria-label="Buscar" name="data" @*style="border: 2px solid #ff69b4; background-color: #fff0f5;">
                    style="border: 2px solid #ff69b4; background-color: #FFFDB9;">*@
-                style="border: 2px solid #ff69b4; background-color: #D4D4D4; ">
+                   style="border: 2px solid #ff69b4; background-color: #D4D4D4; ">
             <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
                 <i class="bi bi-search"></i>
             </span>
@@ -29,19 +29,19 @@
 
 
 <p>
-<div class="d-flex justify-items-center">
-    @if (TempData["t"] != null)
-    {
-        <p>Tienes <strong>@TempData["t"]</strong> contacto(s) almacenado(s)</p>
-    }
-    @if (TempData["te"] != null)
-    {
-        <p><strong>@TempData["te"]</strong> contacto(s) relacionado(s)</p>
-    }
-    <div class="ms-auto d-flex">
-        <a href="/Agenda/AgregarView" class="btn btn-warning btn-sm">Nuevo Contacto</a>
+    <div class="d-flex justify-items-center">
+        @if (TempData["t"] != null)
+        {
+            <p>Tienes <strong>@TempData["t"]</strong> contacto(s) almacenado(s)</p>
+        }
+        @if (TempData["te"] != null)
+        {
+            <p><strong>@TempData["te"]</strong> contacto(s) relacionado(s)</p>
+        }
+        <div class="ms-auto d-flex">
+            <a href="/Agenda/AgregarView" class="btn btn-warning btn-sm">Nuevo Contacto</a>
+        </div>
     </div>
-</div>
 </p>
 
 <div id="container"></div>
@@ -153,11 +153,13 @@
                 let html = "";
                 data.data.forEach(item => {
                     let accordionId = "accordion" + item.idContacto;
-                    let foto = item.foto != "" ? item.foto : "wertyujkedfmncvhgchdjskasdmvnhcjdsmnfhjdks,dmsfjrsjenmlas.jpg";
+                    let foto = item.foto || "wertyujkedfmncvhgchdjskasdmvnhcjdsmnfhjdks,dmsfjrsjenmlas.jpg";
+                    let redes = this.CreatePerfil(item);
+                    let bt = this.CreateBirthDay(item);
                     html += `<div class="card mb-2 bg-white p-3">
                     <div class="row g-0">
                         <!-- Foto del contacto -->
-                        <div class="col-md-4 d-flex align-items-center justify-content-center">                   
+                        <div class="col-md-4 d-flex align-items-center justify-content-center">
                                 <img src="/img/${foto}" class="rounded-circle" width="145" height="145" />
                         </div>
 
@@ -165,11 +167,7 @@
                         <div class="col-md-8">
                             <div class="card-body">
                                 <div class="d-flex justify-items-center">
-                                    @*@if (contacto.BirthDay != 0)
-                            {
-                                <b class="btn me-2" style="color:darkblue"><strong>Feliz Cumpleaños @contacto.Nombre</strong></b>
-                            }*@
-                                    <div class="data-bt-id=${item.idContacto}"></div>
+                                ${bt}
                                     <div class="ms-auto d-flex">
                                         <a href="/Agenda/EditarView/${item.idContacto}" class="btn" title="Editar">
                                             <i class="bi bi-pencil-square"></i>
@@ -189,16 +187,10 @@
                                         </h2>
                                         <div id="collapse-${item.idContacto}" class="accordion-collapse collapse" aria-labelledby="heading-${item.idContacto}" data-bs-parent="#${accordionId}">
                                             <div class="accordion-body">
-                                                <p><strong>Edad:</strong> edad/p>
+                                                <p><strong>Edad:</strong> ${item.edad}</p>
                                                 <p><strong>Teléfono:</strong> ${item.telefono}</p>
                                                 <p><strong>Email:</strong> ${item.email}</p>
-                                                @*@for (int i = 0; i < contacto.Perfil.Count; i++)
-                                        {
-                                            if (contacto.Perfil[i] != null)
-                                            {
-                                                <p><strong>@contacto.RedSocial[i]:</strong> @contacto.Perfil[i]</p>
-                                            }
-                                        }*@
+                                                ${redes}
                                                 <!-- Agrega más campos si necesitas -->
                                             </div>
                                         </div>
@@ -209,9 +201,21 @@
                         </div>
                     </div>
                 </div>`;
-                    console.log(item.nombre);
                 });
                 contenedor.innerHTML = html;
+            }
+            CreatePerfil(item){
+                let html = "";
+                (item.contactoRedSocials || []).forEach(red => {
+                    html += `<p><strong>${red.nombreRedSocial}:</strong> ${red.urlPerfil}</p>`;
+                });
+                return html;
+            }
+            CreateBirthDay(item){
+                if(item.birthDay){
+                    return `<b class="btn me-2" style="color:darkblue"><strong>Feliz Cumpleaños ${item.nombre}</strong></b>`;
+                }
+                return "";
             }
         }
 

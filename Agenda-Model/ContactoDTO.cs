@@ -18,6 +18,39 @@ namespace Agenda_Model
         public string Email { get; set; } = null!;
         public int IdUsuario { get; set; }
 
+        public int Edad
+        {
+            get
+            {
+                int edad = DateTime.Now.Year - FechaNacimiento.Year;
+                if (FechaNacimiento > DateOnly.FromDateTime(DateTime.Now).AddYears(-edad))
+                {
+                    edad--;
+                }
+                return edad;
+            }
+            set
+            {
+                Edad = value;
+            }
+        }
+        public bool BirthDay
+        {
+            get
+            {
+                bool cumple = false;
+                if (DateTime.Now.Day == FechaNacimiento.Day && DateTime.Now.Month == FechaNacimiento.Month)
+                {
+                    cumple = true;
+                }
+                return cumple;
+            }
+            set
+            {
+                BirthDay = value;
+            }
+        }
+
         public List<DetalleDTO> ContactoRedSocials { get; set; } = new List<DetalleDTO>();
     }
 }
