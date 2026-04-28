@@ -1,8 +1,11 @@
-﻿using Agenda_BSS.Interfaces;
+﻿using Agenda_BSS.Configurations;
+using Agenda_BSS.Interfaces;
+using Agenda_BSS.Mappings;
 using Agenda_Data.Models;
 using Agenda_Model;
 using Agenda_Model.General;
 using Azure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -10,14 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Agenda_BSS.Mappings;
 
 namespace Agenda_BSS.Services
 {
-    public class UsuarioService : IUsuario
+    public class UsuarioService : BaseService, IUsuario
     {
-        private readonly AppDbContext _context;
         public UsuarioService(AppDbContext context)
         {
             _context = context;

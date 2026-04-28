@@ -4,7 +4,6 @@ using Agenda_BSS.Mappings;
 using Agenda_Data.Models;
 using Agenda_Model;
 using Agenda_Model.General;
-using Azure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,23 +13,19 @@ using System.Threading.Tasks;
 
 namespace Agenda_BSS.Services
 {
-    public class ContactoService : BaseService , IContacto
+    public class RedSocialService : BaseService, IRedSocial
     {
-        public ContactoService(AppDbContext context)
+        public RedSocialService(AppDbContext context)
         {
             _context = context;
         }
-        public async Task<Result<List<ContactoDTO>>> GetContactos(int idUsuario)
+        public async Task<Result<List<DetalleDTO>>> GetRedSociales()
         {
-            Result<List<ContactoDTO>> result = new();
+            Result<List<DetalleDTO>> result = new();
             try
             {
-                var contactos = await _context.Contactos.
-                    Include(c => c.ContactoRedSocials).
-                    ThenInclude(crs => crs.IdRedSocialNavigation).
-                    Where(x => x.IdUsuario == idUsuario).
-                    ToListAsync();
-                result.Data = contactos.Select(c => c.ToDTO()).ToList();
+                var red = await _context.RedSocials.ToListAsync();
+                result.Data = red.Select(c => c.ToDTO()).ToList();
             }
             catch (Exception ex)
             {

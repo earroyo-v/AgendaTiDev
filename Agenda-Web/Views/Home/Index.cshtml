@@ -1,10 +1,10 @@
-﻿@* @model IEnumerable<WebAgenda.Models.ContactoViewModel> *@
+﻿@inject Agenda_BSS.Interfaces.IRedSocial redSocial
 
-@* @{
-    Layout = "~/Views/Shared/_LayoutAgenda.cshtml";
-    ViewBag.Title = "AgendaView";
-    var user = (WebAgenda.Models.UsuarioSessionViewModel)Session["Usuario"];
-} *@
+@{
+    var result = redSocial.GetRedSociales();
+    var listRedSoacial = result.Result.Data;
+}
+
 <div class="d-flex justify-content-between">
     <h2>Mi Agenda</h2>
     <div>
@@ -162,6 +162,8 @@
                 return "";
             }
             CreateRedSocial(){
+                let redSocialList = @Html.Raw(Json.Serialize(listRedSoacial));
+                console.log(redSocialList);
                 let html = `
                 <div class="row mb-3 g-1 align-items-start">
                 <div class="col-3">
