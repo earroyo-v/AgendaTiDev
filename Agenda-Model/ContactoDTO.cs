@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace Agenda_Model
     public class ContactoDTO
     {
         public int IdContacto { get; set; }
+        [Required]
         public string Nombre { get; set; } = null!;
         public string ApellidoPaterno { get; set; } = null!;
         public string? ApellidoMaterno { get; set; }

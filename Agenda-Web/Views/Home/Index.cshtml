@@ -39,92 +39,36 @@
             <p><strong>@TempData["te"]</strong> contacto(s) relacionado(s)</p>
         }
         <div class="ms-auto d-flex">
-            <a href="/Agenda/AgregarView" class="btn btn-warning btn-sm">Nuevo Contacto</a>
+            <button id="addContact" class="btn btn-success btn-group-sm">Agregar</button>
         </div>
     </div>
 </p>
 
 <div id="container"></div>
-@*foreach (var contacto in Model)
-    {
-        var accordionId = "accordion" + contacto.IdContacto;
 
-        <div class="card mb-2 bg-white p-3">
-            <div class="row g-0">
-                <!-- Foto del contacto -->
-                <div class="col-md-4 d-flex align-items-center justify-content-center">
-                    @*<img src="~/Imagenes/@contacto.Foto" class="img-fluid rounded-start" alt="Foto de @contacto.Nombre" style="max-height: 150px;" />
+@await Html.PartialAsync("_modalContacto")
 
-                    @if (contacto.Foto?.Any() == true)
-                    {
-                        <img src="~/Imagenes/@contacto.Foto" class="rounded-circle" width="145" height="145" />
-                    }
-                    else
-                    {
-                        <img src="~/Imagenes/wertyujkedfmncvhgchdjskasdmvnhcjdsmnfhjdks,dmsfjrsjenmlas.jpg" class="rounded-circle" width="145" height="145" />
-                    }
-                </div>
-
-                <!-- Acordeón con detalles -->
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <div class="d-flex justify-items-center">
-                            @if (contacto.BirthDay != 0)
-                            {
-                                <b class="btn me-2" style="color:darkblue"><strong>Feliz Cumpleaños @contacto.Nombre</strong></b>
-                            }
-                            <div class="ms-auto d-flex">
-                                <a href="/Agenda/EditarView/${item.idContacto}" class="btn" title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a href="/Agenda/EliminarView/${item.idContacto}" class="btn" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="accordion" id="${accordionId}">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="heading-${item.idContacto}">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${item.idContacto}" aria-expanded="false" aria-controls="collapse-${item.idContacto}">
-                                        <h5 class="card-title mb-0">@contacto.Nombre @contacto.ApellidoPaterno @contacto.ApellidoMaterno</h5>
-                                    </button>
-                                </h2>
-                                <div id="collapse-${item.idContacto}" class="accordion-collapse collapse" aria-labelledby="heading-${item.idContacto}" data-bs-parent="#${accordionId}">
-                                    <div class="accordion-body">
-                                        <p><strong>Edad:</strong> @contacto.Edad</p>
-                                        <p><strong>Teléfono:</strong> @contacto.Telefono</p>
-                                        <p><strong>Email:</strong> @contacto.Email</p>
-                                        @for (int i = 0; i < contacto.Perfil.Count; i++)
-                                        {
-                                            if (contacto.Perfil[i] != null)
-                                            {
-                                                <p><strong>@contacto.RedSocial[i]:</strong> @contacto.Perfil[i]</p>
-                                            }
-                                        }
-                                        <!-- Agrega más campos si necesitas -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-}*@
 @section Scripts {
     <script>
-        // Aquí puedes agregar cualquier JavaScript adicional si es necesario
         class Contacto {
             constructor() {
+                this.modal = new bootstrap.Modal(document.getElementById("miModalAdd"));
+                this.redSocial = document.getElementById("netContainer");
+                this.i = 0;
                 this.init();
             }
 
             init() {
-                // let contenedor = document.getElementById("container")
                 this.GetContactos();
+                document.getElementById("addContact").addEventListener("click", () => {
+                    this.i = 0;
+                    this.redSocial.replaceChildren();
+                    this.modal.show();
+                });
+                document.getElementById("netButton").addEventListener("click", () => {
+                    this.CreateRedSocial();
+                });
+
             }
 
             async GetContactos() {
@@ -216,6 +160,30 @@
                     return `<b class="btn me-2" style="color:darkblue"><strong>Feliz Cumpleaños ${item.nombre}</strong></b>`;
                 }
                 return "";
+            }
+            CreateRedSocial(){
+                let html = `
+                <div class="row mb-3 g-1 align-items-start">
+                <div class="col-3">
+                    <select class="form-control" name="ContactoRedSocials[${this.i}].IdRedSocial">
+                    <option value="1">Facebook</option>
+                    </select>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" name="ContactoRedSocials[${this.i}].UrlPerfil" placeholder="Agrega la url"
+                    data-val="true"
+                    data-val-required="La Url es obligatoria" />
+                    <span data-valmsg-for="ContactoRedSocials[${this.i}].UrlPerfil"></span>
+                </div>
+                <div class="col-2">
+                    <button id="netButtonDelete" type="button" class="btn btn-danger" title="Red Social">
+                    Delete
+                    </button>
+                </div>
+                </div>
+                    `;
+                this.redSocial.innerHTML += html.replace('_replace_');
+                this.i++;
             }
         }
 
