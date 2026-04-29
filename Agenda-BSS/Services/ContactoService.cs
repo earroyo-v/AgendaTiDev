@@ -5,6 +5,7 @@ using Agenda_Data.Models;
 using Agenda_Model;
 using Agenda_Model.General;
 using Azure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -39,5 +40,30 @@ namespace Agenda_BSS.Services
             }
             return result;
         }
+        public async Task<Result<bool>> CreateContacto(ContactoDTO contacto)
+        {
+            Result<bool> response = new();
+            try
+            {
+                //valida null
+                if (contacto == null)
+                {
+                    response.Error = true;
+                    response.Message = "Favor de enviar la informacion";
+                    return response;
+                }
+                //fluent validation para reglas de negocio                 
+                _context.Contactos.Add(contacto.ToEntity());
+                await _context.SaveChangesAsync();
+                response.Data = true;
+            }
+            catch (Exception ex)
+            {
+                response.Error = true;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
     }
 }

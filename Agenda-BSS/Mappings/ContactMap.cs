@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Agenda_BSS.Mappings
 {
     public static class ContactMap
-    { 
+    {
         public static ContactoDTO ToDTO(this Contacto contacto)
         {
             return new ContactoDTO
@@ -30,6 +30,29 @@ namespace Agenda_BSS.Mappings
                     IdRedSocial = crs.IdRedSocial,
                     UrlPerfil = crs.UrlPerfil,
                     NombreRedSocial = crs.IdRedSocialNavigation.Nombre
+                }).ToList()
+            };
+        }
+
+        public static Contacto ToEntity(this ContactoDTO contactoDTO)
+        {
+            return new Contacto
+            {
+                IdContacto = contactoDTO.IdContacto,
+                Nombre = contactoDTO.Nombre,
+                ApellidoPaterno = contactoDTO.ApellidoPaterno,
+                ApellidoMaterno = contactoDTO.ApellidoMaterno,
+                FechaNacimiento = contactoDTO.FechaNacimiento,
+                Foto = contactoDTO.Foto,
+                Telefono = contactoDTO.Telefono,
+                Email = contactoDTO.Email,
+                IdUsuario = contactoDTO.IdUsuario,
+                ContactoRedSocials = contactoDTO.ContactoRedSocials.Select(crs => new ContactoRedSocial
+                {
+                    IdContactoRedSocial = crs.IdContactoRedSocial,
+                    IdContacto = crs.IdContacto,
+                    IdRedSocial = crs.IdRedSocial,
+                    UrlPerfil = crs.UrlPerfil
                 }).ToList()
             };
         }
