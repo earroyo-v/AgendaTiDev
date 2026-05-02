@@ -52,26 +52,41 @@
     <script>
         class Contacto {
             constructor() {
-                this.contactoslist = [];
+                this.initVars();
+                this.init();
+            }
+
+            initVars(){
                 this.modal = new bootstrap.Modal(document.getElementById("miModalAdd"));
+
                 this.redSocial = document.getElementById("netContainer");
                 this.redSocialList = @Html.Raw(Json.Serialize(listRedSoacial));
-                this.i = 0;
-                this.init();
+
+                this.contactoslist = [];
+                this.modalTitle = document.querySelector(".modal-title");
+                this.inputIdContact = document.getElementById("IdContacto");
+                this.inputNombre = document.getElementById("Nombre");
+                this.inputApPaterno = document.getElementById("ApellidoPaterno");
+                this.inputApMaterno = document.getElementById("ApellidoMaterno");
+                this.inputBirthD = document.getElementById("FechaNacimiento");
+                this.inputFoto = document.getElementById("Foto");
+                this.inputTelefono = document.getElementById("Telefono");
+                this.inputEmail = document.getElementById("Email");
             }
 
             init() {
                 this.GetContactos();
                 document.getElementById("addContact").addEventListener("click", () => {
-                    this.i = 0;
-                    this.redSocial.replaceChildren();
+                    this.ResetInputsModal();
+                    this.modalTitle.textContent = "Agregar Contacto";
                     this.modal.show();
                 });
                 document.getElementById("netButton").addEventListener("click", () => {
                     this.CreateRedSocial();
                 });
                 document.getElementById("formContacto").addEventListener("click", (e) => {
-                    if(e.target.classList.contains("netButtonDelete")){
+                    const deleteBtn = e.target.closest(".netButtonDelete");
+                    if(deleteBtn){
                         e.target.closest(".net").remove();
                         let rows = document.querySelectorAll(".net");
                         rows.forEach((row, index) => {
@@ -91,21 +106,39 @@
                         return;
                     }
                     e.preventDefault();
-                    this.CreateContactos(e.target);
+                    if(!this.inputIdContact.value){
+                        this.CreateContactos("/Home/CreateContactos/",e.target);
+                    }
+                    else{
+                        console.log("editar");
+                        @*this.CreateContactos("/Home/EditContactos/",e.target);*@
+                    }                    
                 });
                 document.getElementById("container").addEventListener("click", (e) => {
-                    if(e.target.classList.contains("editContact")){
-                        let id = e.target.dataset.id;
-                        console.log(this.contactoslist.find(u => u.id===id));
+                    const btn = e.target.closest(".editContact");
+                    if (btn) {
+                        let id = btn.dataset.id;
+                        const contacto = this.contactoslist.find(item => item.idContacto === Number(id));
+                        this.ResetInputsModal();
+                        this.modalTitle.textContent = "Editar Contacto";
+                        this.inputIdContact.value = contacto.idContacto;
+                        this.inputNombre.value = contacto.nombre;
+                        this.inputApPaterno.value = contacto.apellidoPaterno;
+                        this.inputApMaterno.value = contacto.apellidoPaterno;
+                        this.inputBirthD.value = contacto.fechaNacimiento;
+                        this.inputTelefono.value = contacto.telefono;
+                        this.inputEmail.value = contacto.email;
+                        this.inputFoto.value = contacto.foto;
+                        this.modal.show();
                     }
                 });
             }
 
-            async CreateContactos(Data) {
+            async CreateContactos(url,Data) {
                 try {
                     // const formData = new FormData(document.getElementById("formContacto"));
                     const formData = new FormData(Data);
-                    const response = await fetch("/Home/CreateContactos/", {
+                    const response = await fetch(url, {
                         method: "POST",
                         body: formData
                     });
@@ -139,7 +172,7 @@
                     const data = await response.json();
 
                     if (!data.error) {
-                        this.contactoslist = data.data;
+                        this.contactoslist = [...data.data];
                         this.CreateTable(data);
                     } else {
                         console.error("Error del backend:", data.mensaje);
@@ -171,12 +204,12 @@
                                 <div class="d-flex justify-items-center">
                                 ${bt}
                                     <div class="ms-auto d-flex">
-                                        <a href="#" class="btn editContact" title="Editar" data-id="${item.idContacto}">
+                                        <button type="button" class="btn editContact" title="Editar" data-id="${item.idContacto}">
                                             <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a href="/Agenda/EliminarView/${item.idContacto}" class="btn  deleteContct" title="Eliminar" data-id="${item.idContacto}">
+                                        </button>
+                                        <button type="button" class="btn deleteContct" title="Eliminar" data-id="${item.idContacto}">
                                             <i class="bi bi-trash"></i>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -254,8 +287,16 @@
 
                 this.i++;
             }
-            ResetModal(){
-
+            ResetInputsModal(){
+                this.inputIdContact.value = "";
+                this.inputNombre.value = "";
+                this.inputApPaterno.value = "";
+                this.inputApMaterno.value = "";
+                this.inputBirthD.value = "";
+                this.inputTelefono.value = "";
+                this.inputEmail.value = "";
+                this.inputFoto.value = "";
+                this.redSocial.replaceChildren();
             }
         }
 

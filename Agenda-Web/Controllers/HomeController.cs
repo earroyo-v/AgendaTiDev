@@ -39,7 +39,7 @@ namespace Agenda_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateContactos(ContactoDTO contacto, IFormFile ArchivoImagen)
+        public async Task<IActionResult> CreateContactos(ContactoDTO contacto, IFormFile? ArchivoImagen)
         {
             Result<bool> validation = new();
             if (!ModelState.IsValid)
