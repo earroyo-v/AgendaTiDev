@@ -119,6 +119,7 @@
                     if (btn) {
                         let id = btn.dataset.id;
                         const contacto = this.contactoslist.find(item => item.idContacto === Number(id));
+                        console.log(contacto)
                         this.ResetInputsModal();
                         this.modalTitle.textContent = "Editar Contacto";
                         this.inputIdContact.value = contacto.idContacto;
@@ -129,6 +130,10 @@
                         this.inputTelefono.value = contacto.telefono;
                         this.inputEmail.value = contacto.email;
                         this.inputFoto.value = contacto.foto;
+                        (contacto.contactoRedSocials || []).forEach((red,index) => {
+                            this.CreateRedSocial();
+                            // html += `<p><strong>${red.nombreRedSocial}:</strong> ${red.urlPerfil}</p>`;
+                        });
                         this.modal.show();
                     }
                 });
@@ -265,6 +270,7 @@
                 newRow.classList.add("row", "mb-3", "g-1", "align-items-start", "net");
 
                 newRow.innerHTML += `
+                <input type="hidden" name="IdContacto" id="IdContacto" />
                 <div class="col-3">
                     <select class="form-control netSelect" name="ContactoRedSocials[${index}].IdRedSocial">
                     ${option}
@@ -284,8 +290,6 @@
                     `;
 
                 this.redSocial.appendChild(newRow);
-
-                this.i++;
             }
             ResetInputsModal(){
                 this.inputIdContact.value = "";
