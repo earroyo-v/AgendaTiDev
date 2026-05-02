@@ -52,6 +52,7 @@
     <script>
         class Contacto {
             constructor() {
+                this.contactoslist = [];
                 this.modal = new bootstrap.Modal(document.getElementById("miModalAdd"));
                 this.redSocial = document.getElementById("netContainer");
                 this.redSocialList = @Html.Raw(Json.Serialize(listRedSoacial));
@@ -91,6 +92,12 @@
                     }
                     e.preventDefault();
                     this.CreateContactos(e.target);
+                });
+                document.getElementById("container").addEventListener("click", (e) => {
+                    if(e.target.classList.contains("editContact")){
+                        let id = e.target.dataset.id;
+                        console.log(this.contactoslist.find(u => u.id===id));
+                    }
                 });
             }
 
@@ -132,6 +139,7 @@
                     const data = await response.json();
 
                     if (!data.error) {
+                        this.contactoslist = data.data;
                         this.CreateTable(data);
                     } else {
                         console.error("Error del backend:", data.mensaje);
@@ -163,10 +171,10 @@
                                 <div class="d-flex justify-items-center">
                                 ${bt}
                                     <div class="ms-auto d-flex">
-                                        <a href="/Agenda/EditarView/${item.idContacto}" class="btn" title="Editar">
+                                        <a href="#" class="btn editContact" title="Editar" data-id="${item.idContacto}">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="/Agenda/EliminarView/${item.idContacto}" class="btn" title="Eliminar">
+                                        <a href="/Agenda/EliminarView/${item.idContacto}" class="btn  deleteContct" title="Eliminar" data-id="${item.idContacto}">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </div>

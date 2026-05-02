@@ -12,5 +12,6 @@ namespace Agenda_BSS.Interfaces
     {
         Task<Result<List<ContactoDTO>>> GetContactos(int idUsuario);
         Task<Result<bool>> CreateContacto(ContactoDTO conatcto);
+        Task<Result<bool>> EditContacto(ContactoDTO contacto);
     }
 }

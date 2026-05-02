@@ -65,5 +65,9 @@ namespace Agenda_BSS.Services
             return response;
         }
 
+        Task<Result<bool>> IContacto.EditContacto(ContactoDTO contacto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
