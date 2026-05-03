@@ -70,15 +70,25 @@ namespace Agenda_BSS.Services
             Result<bool> response = new();
             try
             {
-                //valida null
                 if (contacto == null)
                 {
                     response.Error = true;
                     response.Message = "Favor de enviar la informacion";
                     return response;
                 }
-                //fluent validation para reglas de negocio                 
-                _context.Contactos.Add(contacto.ToEntity());
+
+                var contactoExistente = await _context.Contactos
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.IdContacto == contacto.IdContacto);
+
+                //if (contactoExistente == null)
+                //{
+                //    response.Error = true;
+                //    response.Message = "Contacto no encontrado";
+                //    return response;
+                //} 
+                //fluent validation para reglas de negocio
+                _context.Contactos.Update(contacto.ToEntity());
                 await _context.SaveChangesAsync();
                 response.Data = true;
             }

@@ -112,8 +112,7 @@
                         this.CreateContactos("/Home/CreateContactos/",e.target);
                     }
                     else{
-                        console.log("editar");
-                        @*this.CreateContactos("/Home/EditContactos/",e.target);*@
+                        this.CreateContactos("/Home/EditContactos/",e.target);
                     }                    
                 });
                 document.getElementById("container").addEventListener("click", (e) => {
@@ -129,7 +128,7 @@
                         this.inputIdContact.value = contacto.idContacto;
                         this.inputNombre.value = contacto.nombre;
                         this.inputApPaterno.value = contacto.apellidoPaterno;
-                        this.inputApMaterno.value = contacto.apellidoPaterno;
+                        this.inputApMaterno.value = contacto.apellidoMaterno;
                         this.inputBirthD.value = contacto.fechaNacimiento;
                         this.inputTelefono.value = contacto.telefono;
                         this.inputEmail.value = contacto.email;
@@ -261,10 +260,12 @@
                 return "";
             }
             CreateRedSocial(data){
+                let idc = "";
                 let idcr = "";
                 let idrs = "";
                 let urlE = "";
                 if(data){
+                    idc = data.idContacto;
                     idcr = data.idContactoRedSocial;
                     idrs = data.idRedSocial;
                     urlE = data.urlPerfil;
@@ -284,6 +285,7 @@
 
                 newRow.innerHTML += `
                 <input class="netIdCr" type="hidden" name="ContactoRedSocials[${index}].IdContactoRedSocial" value="${idcr}" />
+                <input class="netIdCr" type="hidden" name="ContactoRedSocials[${index}].IdContacto" value="${idc}" />
                 <div class="col-3">
                     <select class="form-control netSelect" name="ContactoRedSocials[${index}].IdRedSocial">
                     ${option}

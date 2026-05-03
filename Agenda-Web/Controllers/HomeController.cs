@@ -78,6 +78,47 @@ namespace Agenda_Web.Controllers
             return Json(validation);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditContactos(ContactoDTO contacto, IFormFile? ArchivoImagen)
+        {
+            Result<bool> validation = new();
+            if (!ModelState.IsValid)
+            {
+                validation.Message = "Información Invalida";
+                validation.Error = true;
+                return Json(validation);
+            }
+            if (ArchivoImagen != null && ArchivoImagen.Length > 0)
+            {
+                var tiposPermitidos = new[] { "image/png", "image/jpeg" };
+
+                if (!tiposPermitidos.Contains(ArchivoImagen.ContentType))
+                {
+                    TempData["error"] = "Solo se permiten imágenes PNG o JPG";
+                    return Redirect("/login");
+                }
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "img");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+                contacto.Foto = Guid.NewGuid().ToString() + Path.GetExtension(ArchivoImagen.FileName);
+                var path = Path.Combine(uploadsFolder, contacto.Foto);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await ArchivoImagen.CopyToAsync(stream);
+                }
+            }
+
+            contacto.IdUsuario = Convert.ToInt32(User.FindFirst("IdUsuario")?.Value);
+
+            validation = await _contacto.EditContacto(contacto);
+
+            return Json(validation);
+        }
+
         public IActionResult Privacy()
         {
             return View();
