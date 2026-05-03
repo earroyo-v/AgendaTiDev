@@ -38,7 +38,7 @@ namespace Agenda_BSS.Mappings
         {
             return new Contacto
             {
-                IdContacto = contactoDTO.IdContacto,
+                IdContacto = contactoDTO.IdContacto ?? 0,
                 Nombre = contactoDTO.Nombre,
                 ApellidoPaterno = contactoDTO.ApellidoPaterno,
                 ApellidoMaterno = contactoDTO.ApellidoMaterno,
@@ -49,7 +49,7 @@ namespace Agenda_BSS.Mappings
                 IdUsuario = contactoDTO.IdUsuario,
                 ContactoRedSocials = contactoDTO.ContactoRedSocials.Select(crs => new ContactoRedSocial
                 {
-                    IdContactoRedSocial = crs.IdContactoRedSocial,
+                    IdContactoRedSocial = crs.IdContactoRedSocial ?? 0,
                     IdContacto = crs.IdContacto,
                     IdRedSocial = crs.IdRedSocial,
                     UrlPerfil = crs.UrlPerfil

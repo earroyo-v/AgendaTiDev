@@ -10,7 +10,7 @@ namespace Agenda_Model
 {
     public class DetalleDTO
     {
-        public int IdContactoRedSocial { get; set; }
+        public int? IdContactoRedSocial { get; set; }
         public int IdContacto { get; set; }
         public int IdRedSocial { get; set; }
         public string UrlPerfil { get; set; } = null!;

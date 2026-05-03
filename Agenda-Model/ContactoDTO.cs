@@ -9,7 +9,7 @@ namespace Agenda_Model
 {
     public class ContactoDTO
     {
-        public int IdContacto { get; set; }
+        public int? IdContacto { get; set; }
         [Required]
         [MinLength(3)]
         [MaxLength(10)]

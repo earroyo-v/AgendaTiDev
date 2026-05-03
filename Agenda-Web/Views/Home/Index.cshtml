@@ -64,6 +64,7 @@
 
                 this.contactoslist = [];
                 this.modalTitle = document.querySelector(".modal-title");
+                this.modalBtn = document.getElementById("btnAdd");
                 this.inputIdContact = document.getElementById("IdContacto");
                 this.inputNombre = document.getElementById("Nombre");
                 this.inputApPaterno = document.getElementById("ApellidoPaterno");
@@ -79,6 +80,7 @@
                 document.getElementById("addContact").addEventListener("click", () => {
                     this.ResetInputsModal();
                     this.modalTitle.textContent = "Agregar Contacto";
+                    this.modalBtn.textContent = "Create";
                     this.modal.show();
                 });
                 document.getElementById("netButton").addEventListener("click", () => {
@@ -119,9 +121,11 @@
                     if (btn) {
                         let id = btn.dataset.id;
                         const contacto = this.contactoslist.find(item => item.idContacto === Number(id));
-                        console.log(contacto)
+                        const redes = contacto.contactoRedSocials;
+                        console.log(redes)
                         this.ResetInputsModal();
                         this.modalTitle.textContent = "Editar Contacto";
+                        this.modalBtn.textContent = "Edit";
                         this.inputIdContact.value = contacto.idContacto;
                         this.inputNombre.value = contacto.nombre;
                         this.inputApPaterno.value = contacto.apellidoPaterno;
@@ -130,9 +134,8 @@
                         this.inputTelefono.value = contacto.telefono;
                         this.inputEmail.value = contacto.email;
                         this.inputFoto.value = contacto.foto;
-                        (contacto.contactoRedSocials || []).forEach((red,index) => {
-                            this.CreateRedSocial();
-                            // html += `<p><strong>${red.nombreRedSocial}:</strong> ${red.urlPerfil}</p>`;
+                        (redes || []).forEach((red) => {
+                            this.CreateRedSocial(red);
                         });
                         this.modal.show();
                     }
@@ -257,10 +260,20 @@
                 }
                 return "";
             }
-            CreateRedSocial(){
+            CreateRedSocial(data){
+                let idcr = "";
+                let idrs = "";
+                let urlE = "";
+                if(data){
+                    idcr = data.idContactoRedSocial;
+                    idrs = data.idRedSocial;
+                    urlE = data.urlPerfil;
+                }
                 let option = '';
                 (this.redSocialList).forEach(item=>{
-                    option += `<option value="${item.idRedSocial}">${item.nombreRedSocial}</option>`
+                    option += `<option value="${item.idRedSocial}" ${item.idRedSocial == idrs ? 'selected' : ''} >
+                    ${item.nombreRedSocial}
+                    </option>`
                 });
 
                 let rows = document.querySelectorAll(".net");
@@ -270,14 +283,14 @@
                 newRow.classList.add("row", "mb-3", "g-1", "align-items-start", "net");
 
                 newRow.innerHTML += `
-                <input type="hidden" name="IdContacto" id="IdContacto" />
+                <input class="netIdCr" type="hidden" name="ContactoRedSocials[${index}].IdContactoRedSocial" value="${idcr}" />
                 <div class="col-3">
                     <select class="form-control netSelect" name="ContactoRedSocials[${index}].IdRedSocial">
                     ${option}
                     </select>
                 </div>
                 <div class="col-7">
-                    <input class="form-control netInput" name="ContactoRedSocials[${index}].UrlPerfil" placeholder="Agrega la url"
+                    <input class="form-control netInput" name="ContactoRedSocials[${index}].UrlPerfil" placeholder="Agrega la url" value="${urlE}"
                     data-val="true"
                     data-val-required="La Url es obligatoria" />
                     <span data-valmsg-for="ContactoRedSocials[${index}].UrlPerfil"></span>
@@ -289,7 +302,7 @@
                 </div>
                     `;
 
-                this.redSocial.appendChild(newRow);
+                this.redSocial.appendChild(newRow);                
             }
             ResetInputsModal(){
                 this.inputIdContact.value = "";

@@ -65,9 +65,29 @@ namespace Agenda_BSS.Services
             return response;
         }
 
-        Task<Result<bool>> IContacto.EditContacto(ContactoDTO contacto)
+        public async Task<Result<bool>> EditContacto(ContactoDTO contacto)
         {
-            throw new NotImplementedException();
+            Result<bool> response = new();
+            try
+            {
+                //valida null
+                if (contacto == null)
+                {
+                    response.Error = true;
+                    response.Message = "Favor de enviar la informacion";
+                    return response;
+                }
+                //fluent validation para reglas de negocio                 
+                _context.Contactos.Add(contacto.ToEntity());
+                await _context.SaveChangesAsync();
+                response.Data = true;
+            }
+            catch (Exception ex)
+            {
+                response.Error = true;
+                response.Message = ex.Message;
+            }
+            return response;
         }
     }
 }
