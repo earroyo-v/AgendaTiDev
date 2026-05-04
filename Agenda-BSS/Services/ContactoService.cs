@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Agenda_BSS.Services
 {
-    public class ContactoService : BaseService , IContacto
+    public class ContactoService : BaseService, IContacto
     {
         public ContactoService(AppDbContext context)
         {
@@ -77,16 +77,23 @@ namespace Agenda_BSS.Services
                     return response;
                 }
 
-                var contactoExistente = await _context.Contactos
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(c => c.IdContacto == contacto.IdContacto);
+                var hashRed = new HashSet<int?>(contacto.ContactoRedSocials.Select(x => x.IdContactoRedSocial));
+                var redesExistentes = await _context.ContactoRedSocials
+                    .Where(x => x.IdContacto == contacto.IdContacto)
+                    .ToListAsync();
 
-                //if (contactoExistente == null)
-                //{
-                //    response.Error = true;
-                //    response.Message = "Contacto no encontrado";
-                //    return response;
-                //} 
+                if (redesExistentes.Any())
+                {
+                    foreach (var redSocial in redesExistentes)
+                    {
+                        if (!hashRed.Contains(redSocial.IdContactoRedSocial))
+                        {
+                            _context.ContactoRedSocials.Remove(redSocial);
+                            //await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+
                 //fluent validation para reglas de negocio
                 _context.Contactos.Update(contacto.ToEntity());
                 await _context.SaveChangesAsync();
