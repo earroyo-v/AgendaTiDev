@@ -65,6 +65,8 @@
                 this.contactoslist = [];
                 this.modalTitle = document.querySelector(".modal-title");
                 this.modalBtn = document.getElementById("btnAdd");
+
+                this.form = document.getElementById("formContacto");
                 this.inputIdContact = document.getElementById("IdContacto");
                 this.inputNombre = document.getElementById("Nombre");
                 this.inputApPaterno = document.getElementById("ApellidoPaterno");
@@ -108,13 +110,23 @@
                         return;
                     }
                     e.preventDefault();
-                    if(!this.inputIdContact.value){
-                        this.CreateContactos("/Home/CreateContactos/",e.target);
+                    const form = e.target;        // const inputIdContact = form.querySelector("#inputIdContact");
+                    
+                    if (!this.inputIdContact.value) {
+                        this.CreateContactos("/Home/CreateContactos/", form);
+                    } else {
+                        let rows = document.querySelectorAll(".net");
+                        
+                        rows.forEach((row) => {
+                            let input = row.querySelector(".netIdC");
+                            if (input) {
+                                input.value = this.inputIdContact.value;
+                            }
+                        });
+                        this.CreateContactos("/Home/EditContactos/", form);
                     }
-                    else{
-                        this.CreateContactos("/Home/EditContactos/",e.target);
-                    }                    
                 });
+
                 document.getElementById("container").addEventListener("click", (e) => {
                     const btn = e.target.closest(".editContact");
                     if (btn) {
@@ -285,7 +297,7 @@
 
                 newRow.innerHTML += `
                 <input class="netIdCr" type="hidden" name="ContactoRedSocials[${index}].IdContactoRedSocial" value="${idcr}" />
-                <input class="netIdCr" type="hidden" name="ContactoRedSocials[${index}].IdContacto" value="${idc}" />
+                <input class="netIdC" type="hidden" name="ContactoRedSocials[${index}].IdContacto" value="${idc}" />
                 <div class="col-3">
                     <select class="form-control netSelect" name="ContactoRedSocials[${index}].IdRedSocial">
                     ${option}
@@ -307,14 +319,16 @@
                 this.redSocial.appendChild(newRow);                
             }
             ResetInputsModal(){
+                this.form.reset();
                 this.inputIdContact.value = "";
-                this.inputNombre.value = "";
+                this.inputFoto.value = "";
+
+                @*this.inputNombre.value = "";
                 this.inputApPaterno.value = "";
                 this.inputApMaterno.value = "";
                 this.inputBirthD.value = "";
                 this.inputTelefono.value = "";
-                this.inputEmail.value = "";
-                this.inputFoto.value = "";
+                this.inputEmail.value = "";*@
                 this.redSocial.replaceChildren();
             }
         }

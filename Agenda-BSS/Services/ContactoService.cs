@@ -78,27 +78,40 @@ namespace Agenda_BSS.Services
                 }
 
                 var hashRed = new HashSet<int?>(contacto.ContactoRedSocials.Select(x => x.IdContactoRedSocial));
+
                 var redesExistentes = await _context.ContactoRedSocials
-                    .Where(x => x.IdContacto == contacto.IdContacto)
-                    .ToListAsync();
+                        .AsNoTracking()
+                        .Where(x => x.IdContacto == contacto.IdContacto)
+                        .ToListAsync();
 
-                if (redesExistentes.Any())
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+
+                try
                 {
-                    foreach (var redSocial in redesExistentes)
+                    if (redesExistentes.Any())
                     {
-                        if (!hashRed.Contains(redSocial.IdContactoRedSocial))
+                        foreach (var redSocial in redesExistentes)
                         {
-                            _context.ContactoRedSocials.Remove(redSocial);
-
-                            //await _context.SaveChangesAsync();
+                            if (!hashRed.Contains(redSocial.IdContactoRedSocial))
+                            {
+                                _context.ContactoRedSocials.Remove(redSocial);
+                                await _context.SaveChangesAsync();
+                            }
                         }
                     }
-                }
 
-                //fluent validation para reglas de negocio
-                _context.Contactos.Update(contacto.ToEntity());
-                await _context.SaveChangesAsync();
-                response.Data = true;
+                    //fluent validation para reglas de negocio
+                    _context.Contactos.Update(contacto.ToEntity());
+                    await _context.SaveChangesAsync();
+                    response.Data = true;
+
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
             }
             catch (Exception ex)
             {
