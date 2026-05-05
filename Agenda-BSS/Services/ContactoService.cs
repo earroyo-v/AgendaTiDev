@@ -89,6 +89,7 @@ namespace Agenda_BSS.Services
                         if (!hashRed.Contains(redSocial.IdContactoRedSocial))
                         {
                             _context.ContactoRedSocials.Remove(redSocial);
+
                             //await _context.SaveChangesAsync();
                         }
                     }
