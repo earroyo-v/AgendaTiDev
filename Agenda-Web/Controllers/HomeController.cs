@@ -1,11 +1,12 @@
-using System.Diagnostics;
 using Agenda_BSS.Interfaces;
 using Agenda_Model;
+using Agenda_Model.General;
 using Agenda_Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Security.Claims;
-using Agenda_Model.General;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace Agenda_Web.Controllers
 {
@@ -115,6 +116,17 @@ namespace Agenda_Web.Controllers
             contacto.IdUsuario = Convert.ToInt32(User.FindFirst("IdUsuario")?.Value);
 
             validation = await _contacto.EditContacto(contacto);
+
+            return Json(validation);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteContactos(int id)
+        {
+            Result<bool> validation = new();
+
+            validation = await _contacto.DeleteContacto(id);
+
 
             return Json(validation);
         }

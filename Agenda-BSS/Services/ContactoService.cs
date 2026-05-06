@@ -120,5 +120,52 @@ namespace Agenda_BSS.Services
             }
             return response;
         }
+
+        public async Task<Result<bool>> DeleteContacto(int idContacto)
+        {
+            Result<bool> response = new();
+            try
+            {
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+                try
+                {
+                    var contacto = await _context.Contactos.AsNoTracking().FirstOrDefaultAsync(x => x.IdContacto == idContacto);
+
+                    if (contacto == null)
+                    {
+                        response.Error = true;
+                        response.Message = "Contacto no encontrado";
+                        return response;
+                    }
+
+                    var redes = await _context.ContactoRedSocials.AsNoTracking().Where(x => x.IdContacto == idContacto)
+                        .ToListAsync();
+
+                    if (redes.Any())
+                    {
+                        _context.ContactoRedSocials.RemoveRange(redes);
+                        await _context.SaveChangesAsync();
+                    }
+                    
+                    _context.Contactos.Remove(contacto);
+                    await _context.SaveChangesAsync();
+
+                    response.Data = true;
+
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Error = true;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
     }
 }

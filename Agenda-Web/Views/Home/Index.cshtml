@@ -110,7 +110,7 @@
                         return;
                     }
                     e.preventDefault();
-                    const form = e.target;        // const inputIdContact = form.querySelector("#inputIdContact");
+                    const form = e.target;
                     
                     if (!this.inputIdContact.value) {
                         this.CreateContactos("/Home/CreateContactos/", form);
@@ -129,6 +129,8 @@
 
                 document.getElementById("container").addEventListener("click", (e) => {
                     const btn = e.target.closest(".editContact");
+                    const btnD = e.target.closest(".deleteContact");
+
                     if (btn) {
                         let id = btn.dataset.id;
                         const contacto = this.contactoslist.find(item => item.idContacto === Number(id));
@@ -150,7 +152,36 @@
                         });
                         this.modal.show();
                     }
+
+                    if (btnD) {
+                        let id = btnD.dataset.id;
+                        if (confirm("¿Estás seguro de eliminar este contacto?")) {
+                            this.DeleteContactos(id);
+                        }
+                    }
                 });
+            }
+
+            async DeleteContactos(id){
+                try{
+                    const response = await fetch(`/Home/DeleteContactos/${id}`);
+
+                    if (!response.ok) {
+                        throw new Error("Error en la respuesta del servidor");
+                    }
+
+                    const data = await response.json();
+
+                    if (!data.error) {
+                        this.modal.hide();
+                        this.GetContactos();
+                    } else {
+                        console.error("Error del backend:", data.mensaje);
+                    }
+                }
+                catch (error){
+                    console.error("Error general:", error);
+                }
             }
 
             async CreateContactos(url,Data) {
@@ -226,7 +257,7 @@
                                         <button type="button" class="btn editContact" title="Editar" data-id="${item.idContacto}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button type="button" class="btn deleteContct" title="Eliminar" data-id="${item.idContacto}">
+                                        <button type="button" class="btn deleteContact" title="Eliminar" data-id="${item.idContacto}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
