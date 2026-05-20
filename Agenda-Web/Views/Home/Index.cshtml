@@ -14,16 +14,16 @@
         } *@
     </div>
     <div>
-        <form class="search-bar position-relative mx-auto" style="max-width: 400px;" method="post"
-              action="/Agenda/Buscar">
-            <input class="form-control ps-5 rounded-pill border-0 shadow-sm" type="search" placeholder="Buscar..."
-                   aria-label="Buscar" name="data" @*style="border: 2px solid #ff69b4; background-color: #fff0f5;">
+        <div class="search-bar position-relative mx-auto" style="max-width: 400px;" >
+            <input class="form-control ps-5 rounded-pill border-0 shadow-sm btnSearch" type="search" placeholder="Buscar..."
+                   aria-label="Buscar" name="data" 
+                   @*style="border: 2px solid #ff69b4; background-color: #fff0f5;">
                    style="border: 2px solid #ff69b4; background-color: #FFFDB9;">*@
                    style="border: 2px solid #ff69b4; background-color: #D4D4D4; ">
             <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
                 <i class="bi bi-search"></i>
             </span>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -159,6 +159,26 @@
                             this.DeleteContactos(id);
                         }
                     }
+                });
+                document.querySelector(".btnSearch").addEventListener("input", (e) => {
+                    let timeout = null;
+
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(() => {
+                        console.log(e.target.value);
+                        const searchTerm = e.target.value.toLowerCase();
+                        const filteredContactos = this.contactoslist.filter(contacto => {
+                            return (
+                                contacto.nombre.toLowerCase().includes(searchTerm) ||
+                                contacto.apellidoPaterno.toLowerCase().includes(searchTerm) ||
+                                contacto.apellidoMaterno.toLowerCase().includes(searchTerm) ||
+                                contacto.email.toLowerCase().includes(searchTerm) ||
+                                contacto.telefono.toLowerCase().includes(searchTerm)
+                            );
+                        });
+                        this.CreateTable({ data: filteredContactos });
+                    }, 500);
                 });
             }
 
