@@ -1,0 +1,36 @@
+﻿@model Agenda_Web.Models.UserProfileViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAgenda.cshtml";
+    ViewBag.Title = "InfoView";
+}
+
+<div class="card text-center">
+    <div class="card-header">
+        Informacion Personal
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div>
+                @*<img src="~/Imagenes/@Model.Foto" class="rounded-circle" width="145" height="145" />*@
+                @if (@Model.Foto?.Any() == true)
+                {
+                    <img src="~/Imagenes/@Model.Foto" class="rounded-circle" width="145" height="145" />
+                }
+                else
+                {
+                    <img src="~/Imagenes/wertyujkedfmncvhgchdjskasdmvnhcjdsmnfhjdks,dmsfjrsjenmlas.jpg" class="rounded-circle" width="145" height="145" />
+                }
+            </div>
+        </div>
+        <h5 class="card-title">@Model.Nombre @Model.ApellidoPaterno @Model.ApellidoMaterno</h5><br />
+        <p class="card-text"><strong>NickName</strong><br />@Model.NickName</p>
+        <p class="card-text"><strong>Fecha de Nacimiento</strong><br />@Model.FechaNacimiento.ToShortDateString()</p>
+        <p class="card-text"><strong>Correo</strong><br />@Model.Email</p>
+        <p class="card-text"><strong>Linkedin</strong><br />@Model.UrlPerfil</p>
+        @* <a href="/User/EditarView/@Model.IdUsuario" class="btn btn-primary">Editar Perfil</a> *@
+    </div>
+    <div class="card-footer text-body-secondary">
+        <a href="/Agenda/Index">Back to List</a>
+    </div>
+</div>
