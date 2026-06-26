@@ -78,6 +78,13 @@ namespace Agenda_Web.Controllers
         }
 
         [Authorize]
+        [HttpGet("/profile-user")]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        [Authorize]
         [HttpGet("/edit-user")]
         public IActionResult Edit()
         {
