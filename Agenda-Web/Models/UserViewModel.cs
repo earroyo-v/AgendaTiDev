@@ -54,4 +54,38 @@ namespace Agenda_Web.Models
         [Url(ErrorMessage = "Ingresa una URL válida")]
         public string? UrlPerfil { get; set; }
     }
+    public class UserProfileViewModel
+    {
+        [Required]
+        [MinLength(3)]
+        [MaxLength(10)]
+        [Display(Name = "Nombre's")]
+        public string Nombre { get; set; } = null!;
+        [Required]
+        [MinLength(3)]
+        [MaxLength(10)]
+        [Display(Name = "Apellido Paterno")]
+        public string ApellidoPaterno { get; set; } = null!;
+        [Required]
+        [MinLength(3)]
+        [MaxLength(10)]
+        [Display(Name = "Apellido Materno")]
+        public string? ApellidoMaterno { get; set; }
+        [Required]
+        [Display(Name = "Fecha de Nacimiento")]
+        public DateOnly FechaNacimiento { get; set; }
+        [Required]
+        [EmailAddress]
+        [Remote("EmailUnico", "User", ErrorMessage = "Este correo ya esta en uso")]
+        public string Email { get; set; } = null!;
+        [Required]
+        [MinLength(3)]
+        [MaxLength(10)]
+        public string NickName { get; set; } = null!;
+        [NotMapped]
+        public IFormFile? ArchivoImagen { get; set; }
+        public string? Foto { get; set; }
+        [Url(ErrorMessage = "Ingresa una URL válida")]
+        public string? UrlPerfil { get; set; }
+    }
 }

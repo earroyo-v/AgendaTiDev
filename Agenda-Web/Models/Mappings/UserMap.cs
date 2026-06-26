@@ -21,5 +21,21 @@ namespace Agenda_Web.Models.Mappings
                 UrlPerfil = usuario.UrlPerfil
             };
         }
+
+        public static UsuarioDTO ToDTO(this UserProfileViewModel usuario)
+        {
+            return new UsuarioDTO
+            {
+                Nombre = usuario.Nombre,
+                ApellidoPaterno = usuario.ApellidoPaterno,
+                ApellidoMaterno = usuario.ApellidoMaterno,
+                FechaNacimiento = usuario.FechaNacimiento,
+                Email = usuario.Email,
+                NickName = usuario.NickName,
+                IdRol = 2,
+                Foto = usuario.Foto,
+                UrlPerfil = usuario.UrlPerfil
+            };
+        }
     }
 }
