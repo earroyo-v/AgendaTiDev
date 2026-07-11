@@ -91,7 +91,7 @@ namespace Agenda_Web.Controllers
                     return Redirect("/Home");
                 }
                 UserProfileViewModel profile = user.Data.ToDTO();
-                return View();
+                return View(profile);
             }
             catch (Exception ex)
             {
