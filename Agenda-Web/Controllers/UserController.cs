@@ -79,9 +79,25 @@ namespace Agenda_Web.Controllers
 
         [Authorize]
         [HttpGet("/profile-user")]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            try
+            {
+                int id = Convert.ToInt32(User.FindFirst("IdUsuario")?.Value);
+                var user = await _usuario.GetUser(id);
+                if (user.Error || user.Data == null)
+                {
+                    TempData["error"] = "Error inesperado";
+                    return Redirect("/Home");
+                }
+                UserProfileViewModel profile = user.Data.ToDTO();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = "Error inesperado";
+                return Redirect("/Home");
+            }
         }
 
         [Authorize]
