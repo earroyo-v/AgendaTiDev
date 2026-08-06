@@ -102,9 +102,38 @@ namespace Agenda_Web.Controllers
 
         [Authorize]
         [HttpGet("/edit-user")]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit()
         {
-            return View();
+            try
+            {
+                int id = Convert.ToInt32(User.FindFirst("IdUsuario")?.Value);
+                var user = await _usuario.GetUser(id);
+                if (user.Error || user.Data == null)
+                {
+                    TempData["error"] = "Error inesperado";
+                    return Redirect("/Home");
+                }
+                UserProfileViewModel profile = user.Data.ToDTO();
+                return View(profile);
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "Error inesperado";
+                return Redirect("/Home");
+            }
+        }
+        [Authorize]
+        [HttpPost("/edit-user")]
+        public async Task<IActionResult> Edit(UserProfileViewModel profile)
+        {
+            try
+            {
+                return Redirect("/edit-user");
+            }
+            catch (Exception)
+            {
+                return Redirect("/edit-user");
+            }
         }
         public async Task<JsonResult> EmailUnico(string email)
         {

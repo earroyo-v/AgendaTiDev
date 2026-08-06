@@ -74,6 +74,17 @@ namespace Agenda_Web.Models
         [Required]
         [Display(Name = "Fecha de Nacimiento")]
         public DateOnly FechaNacimiento { get; set; }
+        public string FechaString
+        {
+            get
+            {
+                return FechaNacimiento.ToString("yyyy-MM-dd");
+            }
+            set
+            {
+                FechaString = value;
+            }
+        }
         [Required]
         [EmailAddress]
         [Remote("EmailUnico", "User", ErrorMessage = "Este correo ya esta en uso")]

@@ -1,0 +1,89 @@
+﻿@model Agenda_Web.Models.UserProfileViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "EditarView";
+}
+
+<h2>Editar Usuario</h2>
+
+<div class="card text-center">
+    <div class="card-header">
+        Editar Informacion
+    </div>
+    <div class="card-body">
+        <form action="/User/Editar" method="post" enctype="multipart/form-data">
+            @* <input type="hidden" name="IdUsuario" value="@Model.IdUsuario" /> *@
+            <div class="row">
+                <div>
+                    @if (@Model.Foto?.Any() == true)
+                    {
+                        <img src="~/img/@Model.Foto" class="rounded-circle" width="145" height="145" />
+                    }
+                    else
+                    {
+                        <img src="~/img/wertyujkedfmncvhgchdjskasdmvnhcjdsmnfhjdks,dmsfjrsjenmlas.jpg" class="rounded-circle" width="145" height="145" />
+                    }
+                </div>
+                <div class="d-flex justify-content-center">
+                    <input type="hidden" name="Foto" value="@Model.Foto" />
+                    <input type="file" name="ArchivoImagen" class="form-control" />
+                </div>
+            </div>
+            <br />
+            <p class="card-text">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center mx-2">
+                        <strong>Nombre(s)</strong><br />
+                        <input type="text" name="Nombre" value="@Model.Nombre" class="form-control text-center" style="width: 150px;" />
+                    </div>
+                    <div class="text-center mx-2">
+                        <strong>ApellidoPaterno</strong><br />
+                        <input type="text" name="ApellidoPaterno" value="@Model.ApellidoPaterno" class="form-control text-center" style="width: 150px;" />
+                    </div>
+                    <div class="text-center mx-2">
+                        <strong>ApellidoMaterno</strong><br />
+                        <input type="text" name="ApellidoMaterno" value="@Model.ApellidoMaterno" class="form-control text-center" style="width: 150px;" />
+                    </div>
+                </div>
+            </p>
+
+            <p class="card-text text-center mb-2">
+                <strong class="d-block mb-1">NickName</strong>
+                <div class="d-flex justify-content-center">
+                    <input type="text" name="NickName" value="@Model.NickName" class="form-control text-center" style="width: 250px;" />
+                </div>
+            </p>
+
+            <p class="card-text text-center mb-2">
+                <strong class="d-block mb-1">Fecha de Nacimiento</strong>
+                <div class="d-flex justify-content-center">
+                    <input type="date" name="FechaNacimiento" value="@Model.FechaString" class="form-control text-center" style="width: 250px;" />
+                </div>
+            </p>
+
+            <p class="card-text text-center mb-2">
+                <strong class="d-block mb-1">Correo</strong>
+                <div class="d-flex justify-content-center">
+                    <input type="text" name="Email" value="@Model.Email" class="form-control text-center" style="width: 250px;" />
+                </div>
+            </p>
+
+            <p class="card-text text-center mb-2">
+                <strong class="d-block mb-1">Linkedin</strong>
+                <div class="d-flex justify-content-center">
+                    <input type="text" name="UrlPerfil" value="@Model.UrlPerfil" class="form-control text-center" style="width: 250px;" />
+                </div>
+            </p>
+
+            <input type="submit" value="Confirmar" class="btn btn-warning" />
+        </form>
+    </div>
+    <div class="card-footer text-body-secondary">
+        <a href="/Agenda/Index">Back to List</a>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
