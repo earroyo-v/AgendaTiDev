@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Agenda_BSS.Services
 {
@@ -98,6 +99,49 @@ namespace Agenda_BSS.Services
                 var hasher = new PasswordHasher<object>();
                 user.Password = hasher.HashPassword(null, usuario.Password); //PBKDF2(password, salt, iteraciones, SHA512)                
                 _context.Usuarios.Add(user);
+                await _context.SaveChangesAsync();
+                response.Data = true;
+            }
+            catch (Exception ex)
+            {
+                response.Error = true;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+        public async Task<Result<bool>> UpdateUser(UsuarioDTO usuario)
+        {
+            Result<bool> response = new();
+            try
+            {
+                //valida null
+                if (usuario == null)
+                {
+                    response.Error = true;
+                    response.Message = "Favor de enviar la informacion";
+                    return response;
+                }
+                //fluent validation para reglas de negocio 
+                //Obtener usuario
+                var userDB = await _context.Usuarios.FirstOrDefaultAsync(x => x.IdUsuario == usuario.IdUsuario);
+                //validar si es null
+                if (userDB == null)
+                {
+                    response.Error = true;
+                    response.Message = "El usuario no existe";
+                    return response;
+                }
+                //actualizar campos con for
+                userDB.Nombre = usuario.Nombre;
+                userDB.ApellidoPaterno = usuario.ApellidoPaterno;
+                userDB.ApellidoMaterno = usuario.ApellidoMaterno;
+                userDB.FechaNacimiento = usuario.FechaNacimiento;
+                userDB.Email = usuario.Email;
+                userDB.NickName = usuario.NickName;
+                userDB.Foto = !usuario.Foto.IsNullOrEmpty() ? usuario.Foto : userDB.Foto;
+                userDB.UrlPerfil = usuario.UrlPerfil;
+
+                _context.Usuarios.Update(userDB);
                 await _context.SaveChangesAsync();
                 response.Data = true;
             }

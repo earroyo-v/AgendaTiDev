@@ -128,10 +128,42 @@ namespace Agenda_Web.Controllers
         {
             try
             {
-                return Redirect("/edit-user");
+                if (profile.ArchivoImagen != null && profile.ArchivoImagen.Length > 0)
+                {
+                    var tiposPermitidos = new[] { "image/png", "image/jpeg" };
+
+                    if (!tiposPermitidos.Contains(profile.ArchivoImagen.ContentType))
+                    {
+                        TempData["error"] = "Solo se permiten imágenes PNG o JPG";
+                        return Redirect("/login");
+                    }
+                    var uploadsFolder = Path.Combine(_env.WebRootPath, "img");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    profile.Foto = Guid.NewGuid().ToString() + Path.GetExtension(profile.ArchivoImagen.FileName);
+                    var path = Path.Combine(uploadsFolder, profile.Foto);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await profile.ArchivoImagen.CopyToAsync(stream);
+                    }
+                }
+                var user = profile.ToDTO();
+                user.IdUsuario = Convert.ToInt32(User.FindFirst("IdUsuario")?.Value);
+                var response = await _usuario.UpdateUser(user);
+                if (response.Error)
+                {
+                    TempData["error"] = "Error inesperado";
+                    return Redirect("/Home");
+                }
+                //TempData["error"] = "Error inesperado";
+                return Redirect("/Home");
             }
             catch (Exception)
             {
+                TempData["error"] = "Error inesperado";
                 return Redirect("/edit-user");
             }
         }
