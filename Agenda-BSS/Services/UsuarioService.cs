@@ -152,11 +152,37 @@ namespace Agenda_BSS.Services
             }
             return response;
         }
-        public async Task<Result<bool>> ChangePassword(string email, string NewPssw)
+        public async Task<Result<bool>> ChangePassword(string email, string CurrentPssw, string NewPssw)
         {
             Result<bool> response = new();
             try
-            {                
+            {
+                if (email.IsNullOrEmpty() || CurrentPssw.IsNullOrEmpty() || NewPssw.IsNullOrEmpty())
+                {
+                    response.Error = true;
+                    response.Message = "Falta Email o Password";
+                    return response;
+                }
+
+                //el email tiene que ser unico
+                var usuario = await _context.Usuarios.Include(x => x.IdRolNavigation).FirstOrDefaultAsync(x => x.Email == email);
+
+                if (usuario == null)
+                {
+                    response.Error = true;
+                    response.Message = "Email incorrecto";
+                    return response;
+                }
+
+                var hasher = new PasswordHasher<object>();
+                var resultado = hasher.VerifyHashedPassword(null, usuario.Password, CurrentPssw);
+
+                if (resultado != PasswordVerificationResult.Success)
+                {
+                    response.Error = true;
+                    response.Message = "Password incorrecto";
+                    return response;
+                }
                 //fluent validation para reglas de negocio 
                 //valida passwaord con espacios -> eso se podria validar en controller esta bien
                 if (NewPssw.Contains(" "))
@@ -165,16 +191,8 @@ namespace Agenda_BSS.Services
                     response.Message = "El password no puede contener espacios";
                     return response;
                 }
-                var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
-                if (user == null)
-                {
-                    response.Error = true;
-                    response.Message = "El usuario no existe";
-                    return response;
-                }
 
-                var hasher = new PasswordHasher<object>();
-                user.Password = hasher.HashPassword(null, NewPssw);
+                usuario.Password = hasher.HashPassword(null, NewPssw);
 
                 await _context.SaveChangesAsync();
                 response.Data = true;

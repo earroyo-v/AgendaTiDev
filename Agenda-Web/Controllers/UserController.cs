@@ -192,19 +192,13 @@ namespace Agenda_Web.Controllers
                 if (string.IsNullOrEmpty(email))
                 {
                     TempData["error"] = "Error inesperado";
-                    return Redirect("/Home");
-                }
-                var validation = await _usuario.ValidateUser(email, CurrentPssw);
-                if (validation.Error || validation.Data == null)
-                {
-                    TempData["error"] = "Contraseña actual incorrecta";
                     return Redirect("/change-password");
                 }
-                var response = await _usuario.ChangePassword(email, NewPssw);
+                var response = await _usuario.ChangePassword(email, CurrentPssw, NewPssw);
                 if (response.Error)
                 {
-                    TempData["error"] = "Error inesperado";
-                    return Redirect("/Home");
+                    TempData["error"] = response.Message;
+                    return Redirect("/change-password");
                 }
                 //TempData["error"] = "Error inesperado";
                 return Redirect("/Home");
@@ -212,7 +206,7 @@ namespace Agenda_Web.Controllers
             catch (Exception ex)
             {
                 TempData["e"] = ex.Message;
-                return Redirect("/Home");
+                return Redirect("/change-password");
             }
         }
         public async Task<JsonResult> EmailUnico(string email)
