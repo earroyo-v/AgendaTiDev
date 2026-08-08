@@ -152,6 +152,41 @@ namespace Agenda_BSS.Services
             }
             return response;
         }
+        public async Task<Result<bool>> ChangePassword(string email, string NewPssw)
+        {
+            Result<bool> response = new();
+            try
+            {                
+                //fluent validation para reglas de negocio 
+                //valida passwaord con espacios -> eso se podria validar en controller esta bien
+                if (NewPssw.Contains(" "))
+                {
+                    response.Error = true;
+                    response.Message = "El password no puede contener espacios";
+                    return response;
+                }
+                var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
+                if (user == null)
+                {
+                    response.Error = true;
+                    response.Message = "El usuario no existe";
+                    return response;
+                }
+
+                var hasher = new PasswordHasher<object>();
+                user.Password = hasher.HashPassword(null, NewPssw);
+
+                await _context.SaveChangesAsync();
+                response.Data = true;
+            }
+            catch (Exception ex)
+            {
+                response.Error = true;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<Result<UsuarioDTO>> GetUser(int id)
         {
             Result<UsuarioDTO> response = new();

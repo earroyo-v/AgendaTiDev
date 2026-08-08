@@ -1,0 +1,51 @@
+﻿@* @model Agenda_Web.Models.UserProfileViewModel *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "CambiarPsswView";
+}
+
+<h2></h2>
+
+<div class="card text-center">
+    <div class="card-header">
+        Cambiar Contraseña
+    </div>
+    <div class="card-body">
+        <form action="/change-password" method="post">
+            <br />
+            <p class="card-text text-center mb-2">
+                <strong class="d-block mb-1">Contraseña Actual</strong>
+                <div class="d-flex justify-content-center">
+                    <input type="password" name="CurrentPssw" class="form-control text-center rounded-pill" style="width: 250px;" />
+                </div>
+            </p>
+
+            <p class="card-text text-center mb-2">
+                <strong class="d-block mb-1">Contraseña Nueva</strong>
+                <div class="d-flex justify-content-center">
+                    <input type="password" name="NewPssw" class="form-control text-center rounded-pill" style="width: 250px;" />
+                </div>
+            </p>
+
+            @*<p class="card-text text-center mb-2">
+                    <strong class="d-block mb-1">Linkedin</strong>
+                    <div class="d-flex justify-content-center">
+                        <input type="text" name="UrlPerfil" value="@Model.UrlPerfil" class="form-control text-center" style="width: 250px;" />
+                    </div>
+                </p>*@
+
+            <input type="submit" value="Cambiar" class="btn btn-primary rounded-pill" />
+        </form>
+    </div>
+    <div class="card-footer text-body-secondary">
+        <a href="/Home">Back to List</a>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

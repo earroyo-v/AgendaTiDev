@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Agenda_Web.Controllers
 {
@@ -165,6 +166,53 @@ namespace Agenda_Web.Controllers
             {
                 TempData["error"] = "Error inesperado";
                 return Redirect("/edit-user");
+            }
+        }
+        [Authorize]
+        [HttpGet("/change-password")]
+        public IActionResult ChangePssw()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["e"] = ex.Message;
+                return Redirect("/Home");
+            }
+        }
+        [Authorize]
+        [HttpPost("/change-password")]
+        public async Task<IActionResult> ChangePssw(string NewPssw, string CurrentPssw)
+        {
+            try
+            {
+                var email = User.FindFirst(ClaimTypes.Email)?.Value;
+                if (string.IsNullOrEmpty(email))
+                {
+                    TempData["error"] = "Error inesperado";
+                    return Redirect("/Home");
+                }
+                var validation = await _usuario.ValidateUser(email, CurrentPssw);
+                if (validation.Error || validation.Data == null)
+                {
+                    TempData["error"] = "Contraseña actual incorrecta";
+                    return Redirect("/change-password");
+                }
+                var response = await _usuario.ChangePassword(email, NewPssw);
+                if (response.Error)
+                {
+                    TempData["error"] = "Error inesperado";
+                    return Redirect("/Home");
+                }
+                //TempData["error"] = "Error inesperado";
+                return Redirect("/Home");
+            }
+            catch (Exception ex)
+            {
+                TempData["e"] = ex.Message;
+                return Redirect("/Home");
             }
         }
         public async Task<JsonResult> EmailUnico(string email)
