@@ -40,7 +40,7 @@ namespace Agenda_BSS.Services
                 //string hash = hasher.HashPassword(null, password); //PBKDF2(password, salt, iteraciones, SHA512)
 
                 //el email tiene que ser unico
-                var usuario = await _context.Usuarios.Include(x => x.IdRolNavigation).FirstOrDefaultAsync(x => x.Email == email);
+                var usuario = await _context.Usuarios.Include(x => x.IdRolNavigation).FirstOrDefaultAsync(x => x.Email == email && x.Activo);
 
                 if (usuario == null)
                 {
