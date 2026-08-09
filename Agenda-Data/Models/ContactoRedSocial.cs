@@ -16,7 +16,7 @@ public partial class ContactoRedSocial
 
     public int IdRedSocial { get; set; }
 
-    [StringLength(100)]
+    [StringLength(50)]
     [Unicode(false)]
     public string UrlPerfil { get; set; } = null!;
 

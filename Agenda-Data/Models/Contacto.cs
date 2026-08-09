@@ -31,7 +31,7 @@ public partial class Contacto
 
     [StringLength(50)]
     [Unicode(false)]
-    public string? Telefono { get; set; }
+    public string Telefono { get; set; } = null!;
 
     [StringLength(50)]
     [Unicode(false)]

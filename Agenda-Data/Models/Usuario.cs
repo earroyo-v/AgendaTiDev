@@ -48,6 +48,8 @@ public partial class Usuario
 
     public int IdRol { get; set; }
 
+    public bool Activo { get; set; }
+
     [InverseProperty("IdUsuarioNavigation")]
     public virtual ICollection<Contacto> Contactos { get; set; } = new List<Contacto>();
 
