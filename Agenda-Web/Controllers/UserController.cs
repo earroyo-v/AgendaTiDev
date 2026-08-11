@@ -209,6 +209,27 @@ namespace Agenda_Web.Controllers
                 return Redirect("/change-password");
             }
         }
+        [Authorize]
+        [HttpGet("/delete-user")]
+        public async Task<IActionResult> DeleteUser()
+        {
+            try
+            {
+                int id = Convert.ToInt32(User.FindFirst("IdUsuario")?.Value);
+                var response = await _usuario.DeleteUser(id);
+                if (response.Error)
+                {
+                    TempData["error"] = response.Message;
+                    return Redirect("/Home");
+                }
+                return Redirect("/LogOut");
+            }
+            catch (Exception ex)
+            {
+                TempData["e"] = ex.Message;
+                return Redirect("/Home");
+            }
+        }
         public async Task<JsonResult> EmailUnico(string email)
         {
             bool emailUnique = await _usuario.ValidateEmail(email);

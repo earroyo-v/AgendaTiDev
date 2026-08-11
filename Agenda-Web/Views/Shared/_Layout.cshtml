@@ -78,7 +78,7 @@
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="/change-password">Cambiar Contraseña</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/User/EliminarView">Eliminar Cuenta</a></li>
+                                    <li><a class="dropdown-item btnDeleteUser" href="/delete-user">Eliminar Cuenta</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -114,6 +114,7 @@
             &copy; 2026 - Agenda_Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    @await Html.PartialAsync("_ModalError")
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

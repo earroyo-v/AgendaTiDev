@@ -152,6 +152,30 @@ namespace Agenda_BSS.Services
             }
             return response;
         }
+
+        public async Task<Result<bool>> DeleteUser(int id)
+        {
+            Result<bool> response = new();
+            try
+            {
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.IdUsuario == id);
+                if (usuario == null)
+                {
+                    response.Error = true;
+                    response.Message = "El usuario no existe";
+                    return response;
+                }
+                usuario.Activo = false;
+                await _context.SaveChangesAsync();
+                response.Data = true;
+            }
+            catch (Exception ex)
+            {
+                response.Error = true;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
         public async Task<Result<bool>> ChangePassword(string email, string CurrentPssw, string NewPssw)
         {
             Result<bool> response = new();
