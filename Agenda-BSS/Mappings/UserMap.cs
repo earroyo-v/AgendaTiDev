@@ -42,7 +42,8 @@ namespace Agenda_BSS.Mappings
                 Password = user.Password,
                 Foto = user.Foto,
                 UrlPerfil = user.UrlPerfil,
-                IdRol = user.IdRol
+                IdRol = user.IdRol,
+                Activo = user.Activo
             };
         }
     }

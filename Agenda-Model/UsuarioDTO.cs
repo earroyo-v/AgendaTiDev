@@ -21,7 +21,8 @@ namespace Agenda_Model
         public string? Foto { get; set; }
         public string? UrlPerfil { get; set; }
         public int IdRol { get; set; }
-        public string Rol { get; set; }
+        public string Rol { get; set; } = null!;
+        public bool Activo { get; set; }
 
         /*public static implicit operator UsuarioDTO(Usuario usuario)
         {

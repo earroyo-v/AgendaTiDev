@@ -18,7 +18,8 @@ namespace Agenda_Web.Models.Mappings
                 Password = usuario.Password,
                 IdRol = 2,
                 Foto = usuario.Foto,
-                UrlPerfil = usuario.UrlPerfil
+                UrlPerfil = usuario.UrlPerfil,
+                Activo = true
             };
         }
 
